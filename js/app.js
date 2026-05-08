@@ -84,15 +84,29 @@
   ----------------------------------------------------- */
   function adSlot(format) {
     const f = format || 'rectangle';
-    return `<aside class="ad-slot ad-${esc(f)}" aria-label="Advertisement"><span class="ad-label">Advertisement</span><!--
-      AdSense slot. To activate: replace data-ad-slot, then uncomment this block.
-      <ins class="adsbygoogle" style="display:block"
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-        data-ad-slot="XXXXXXXXXX"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    --></aside>`;
+
+    return `
+      <aside class="ad-slot ad-${esc(f)}" aria-label="Advertisement">
+        <span class="ad-label">Advertisement</span>
+        <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-1319817671788428"
+          data-ad-slot="PASTE_YOUR_AD_SLOT_ID_HERE"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      </aside>
+    `;
+  }
+  function loadAds() {
+    setTimeout(() => {
+      document.querySelectorAll('.adsbygoogle').forEach(() => {
+        try {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+          console.warn('AdSense load skipped:', e);
+        }
+      });
+    }, 100);
   }
 
   function lookupCat(id)     { return byId(D.cats, id); }
@@ -191,32 +205,32 @@
     renderLeftNav(route);
     renderRightNav(route);
 
-    if (route === '/' || route === '') return renderHome();
-    if (route === '/getting-started') return renderStaticPage('getting-started');
-    if (route === '/genetics')        return renderStaticPage('genetics');
-    if (route === '/breeding')        return renderStaticPage('breeding');
-    if (route === '/combat')          return renderStaticPage('combat');
-    if (route === '/cats')            return renderCatsList();
-    if (route === '/abilities')       return renderAbilitiesList();
-    if (route === '/items')           return renderItemsList();
-    if (route === '/enemies')         return renderEnemiesList();
-    if (route === '/locations')       return renderLocationsList();
-    if (route === '/status')          return renderStatusList();
-    if (route === '/genes')           return renderGenesList();
-    if (route === '/strategies')      return renderStrategiesList();
-    if (route === '/patches')         return renderPatches();
-    if (route === '/about')           return renderInfoPage('about');
-    if (route === '/privacy-policy')  return renderInfoPage('privacy-policy');
-    if (route === '/contact')         return renderInfoPage('contact');
+    if (route === '/' || route === '') renderHome();
+    else if (route === '/getting-started') renderStaticPage('getting-started');
+    else if (route === '/genetics') renderStaticPage('genetics');
+    else if (route === '/breeding') renderStaticPage('breeding');
+    else if (route === '/combat') renderStaticPage('combat');
+    else if (route === '/cats') renderCatsList();
+    else if (route === '/abilities') renderAbilitiesList();
+    else if (route === '/items') renderItemsList();
+    else if (route === '/enemies') renderEnemiesList();
+    else if (route === '/locations') renderLocationsList();
+    else if (route === '/status') renderStatusList();
+    else if (route === '/genes') renderGenesList();
+    else if (route === '/strategies') renderStrategiesList();
+    else if (route === '/patches') renderPatches();
+    else if (route === '/about') renderAbout();
+    else if (route === '/privacy') renderPrivacyPolicy();
+    else if (route === '/contact') renderContact();
+    else if (route.startsWith('/cats/')) renderCatDetail(route.slice(6));
+    else if (route.startsWith('/abilities/')) renderAbilityDetail(route.slice(11));
+    else if (route.startsWith('/items/')) renderItemDetail(route.slice(7));
+    else if (route.startsWith('/enemies/')) renderEnemyDetail(route.slice(9));
+    else if (route.startsWith('/locations/')) renderLocationDetail(route.slice(11));
+    else if (route.startsWith('/strategies/')) renderStrategyDetail(route.slice(12));
+    else render404(route);
 
-    if (route.startsWith('/cats/'))      return renderCatDetail(route.slice(6));
-    if (route.startsWith('/abilities/')) return renderAbilityDetail(route.slice(11));
-    if (route.startsWith('/items/'))     return renderItemDetail(route.slice(7));
-    if (route.startsWith('/enemies/'))   return renderEnemyDetail(route.slice(9));
-    if (route.startsWith('/locations/')) return renderLocationDetail(route.slice(11));
-    if (route.startsWith('/strategies/'))return renderStrategyDetail(route.slice(12));
-
-    render404(route);
+    loadAds();
   }
 
   /* ============================================================
