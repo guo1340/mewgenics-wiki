@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mewgenics Wiki — Unofficial Guide</title>
+<meta name="description" content="Unofficial community wiki for Mewgenics — cats, genes, abilities, items, enemies, locations, and strategy.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🐱%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site">
+  <a class="logo" href="#/">MEWGENICS<small>WIKI · unofficial</small></a>
+  <div class="search">
+    <input type="text" id="searchInput" placeholder="Search cats, genes, items, abilities…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+  <nav class="top">
+    <a href="#/cats">Cats</a>
+    <a href="#/abilities">Abilities</a>
+    <a href="#/items">Items</a>
+    <a href="#/enemies">Enemies</a>
+    <a href="#/combat">Combat</a>
+  </nav>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+</header>
+
+<div class="layout">
+  <aside class="left" id="leftNav"></aside>
+  <main id="main">
+    <div class="loading">Loading…</div>
+  </main>
+  <aside class="right" id="rightNav"></aside>
+</div>
+
+<footer class="site">
+  Unofficial fan wiki · Mewgenics is © its respective developers · Built as a static site, free to host on Cloudflare Pages.
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
