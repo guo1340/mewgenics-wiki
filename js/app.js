@@ -131,6 +131,12 @@
         <li><a href="#/strategies" data-r="/strategies">Strategies</a></li>
         <li><a href="#/patches" data-r="/patches">Patch Notes</a></li>
       </ul>
+      <h3>Site Info</h3>
+      <ul>
+        <li><a href="#/about" data-r="/about">About</a></li>
+        <li><a href="#/privacy-policy" data-r="/privacy-policy">Privacy Policy</a></li>
+        <li><a href="#/contact" data-r="/contact">Contact</a></li>
+      </ul>
       ${adSlot('half-page')}
     `;
     leftNav.querySelectorAll('a').forEach((a) => {
@@ -174,6 +180,12 @@
       <h3>Did you know?</h3>
       <p class="qd">Recessive genes only express when both alleles are lowercase. Want a rare trait? Inbreed carefully.</p>
       ${adSlot('rectangle')}
+      <h3>Site Info</h3>
+      <ul>
+        <li><a href="#/about">About this wiki</a></li>
+        <li><a href="#/privacy-policy">Privacy Policy</a></li>
+        <li><a href="#/contact">Contact</a></li>
+      </ul>
       <h3>Contribute</h3>
       <p class="qd">Found wrong info? Edit <code>js/data.js</code> in the GitHub repo and open a PR.</p>
     `;
@@ -203,6 +215,9 @@
     if (route === '/genes')           return renderGenesList();
     if (route === '/strategies')      return renderStrategiesList();
     if (route === '/patches')         return renderPatches();
+    if (route === '/about')           return renderInfoPage('about');
+    if (route === '/privacy-policy')  return renderInfoPage('privacy-policy');
+    if (route === '/contact')         return renderInfoPage('contact');
 
     if (route.startsWith('/cats/'))      return renderCatDetail(route.slice(6));
     if (route.startsWith('/abilities/')) return renderAbilityDetail(route.slice(11));
@@ -969,6 +984,80 @@
     `;
   }
 
+
+  function renderInfoPage(slug) {
+    const pages = {
+      'about': {
+        title: 'About GameWikiHub Mewgenics Wiki',
+        crumb: 'About',
+        body: `
+          <p><strong>GameWikiHub Mewgenics Wiki</strong> is an unofficial fan-made guide for players who want quick access to Mewgenics mechanics, cat data, genes, abilities, items, enemies, locations, patch notes, and strategies.</p>
+          <p>This site is built and maintained as a static community resource. It is not affiliated with, endorsed by, or sponsored by the creators, publishers, or rights holders of Mewgenics.</p>
+          <h3>Purpose</h3>
+          <p>The goal of this wiki is to organize gameplay information in a clean, fast, and searchable format so players can learn mechanics, compare entries, and plan builds more easily.</p>
+          <h3>Content accuracy</h3>
+          <p>Game information can change across updates. Patch changes, balance updates, and community discoveries may make older pages incomplete. Use the Contact page to report corrections or suggest improvements.</p>
+          <h3>Advertising</h3>
+          <p>This site may display advertising to help cover hosting, domain, maintenance, and content-production costs. Ads should be placed in a way that does not block core wiki content.</p>
+        `
+      },
+      'privacy-policy': {
+        title: 'Privacy Policy',
+        crumb: 'Privacy Policy',
+        body: `
+          <p><strong>Effective date:</strong> May 8, 2026</p>
+          <p>This Privacy Policy explains how GameWikiHub Mewgenics Wiki handles basic information when you visit this website.</p>
+          <h3>Information we collect</h3>
+          <p>This site is a static wiki and does not require user accounts. We do not intentionally collect names, passwords, payment information, or private account details from visitors.</p>
+          <p>Basic technical information may be processed automatically by hosting, security, analytics, and advertising providers. This can include IP address, browser type, device type, pages visited, referring pages, approximate location, and timestamps.</p>
+          <h3>Cookies and local storage</h3>
+          <p>The site may use browser storage such as <code>localStorage</code> to remember interface preferences, such as table filters. Third-party services such as analytics or advertising providers may use cookies or similar technologies according to their own policies.</p>
+          <h3>Analytics</h3>
+          <p>We may use analytics tools to understand site traffic, popular pages, search behavior, and technical issues. Analytics data is used to improve the site and prioritize wiki content.</p>
+          <h3>Advertising</h3>
+          <p>This site may use Google AdSense or other advertising providers. Advertising partners may use cookies or similar technologies to serve ads, measure ad performance, prevent fraud, and personalize or limit advertising depending on user settings and applicable law.</p>
+          <p>You can learn more about how Google uses information from sites and apps that use its services by visiting Google's privacy and advertising documentation.</p>
+          <h3>Third-party links</h3>
+          <p>This wiki may link to external websites, stores, social platforms, developer posts, or community resources. We are not responsible for the privacy practices or content of third-party websites.</p>
+          <h3>Children's privacy</h3>
+          <p>This site is intended as a general game-information resource. It is not designed to knowingly collect personal information from children.</p>
+          <h3>Changes to this policy</h3>
+          <p>We may update this Privacy Policy as the site grows, especially when new analytics, advertising, contact, or community features are added.</p>
+          <h3>Contact</h3>
+          <p>Questions about this policy can be sent through the <a href="#/contact">Contact page</a>.</p>
+        `
+      },
+      'contact': {
+        title: 'Contact',
+        crumb: 'Contact',
+        body: `
+          <p>Use this page to report incorrect wiki information, request removals, suggest new pages, or ask questions about GameWikiHub Mewgenics Wiki.</p>
+          <div class="callout tip"><strong>Before publishing:</strong> replace the placeholder email below with your real contact email, or link to your GitHub Issues page.</div>
+          <h3>Email</h3>
+          <p><a href="mailto:contact@gamewikihub.com">contact@gamewikihub.com</a></p>
+          <h3>What to include</h3>
+          <ul>
+            <li>The page or entry name you are referring to.</li>
+            <li>What information is wrong, missing, or outdated.</li>
+            <li>A source, screenshot, patch note, or clear explanation when available.</li>
+          </ul>
+          <h3>Unofficial site notice</h3>
+          <p>This is an unofficial fan wiki. For official support, purchasing issues, bug reports, or account problems, contact the official game developer or platform support channel.</p>
+        `
+      }
+    };
+    const p = pages[slug];
+    if (!p) return render404(slug);
+    main.innerHTML = `
+      ${adSlot('banner')}
+      <div class="page legal-page">
+        <h1>${p.title}</h1>
+        <div class="breadcrumb">Home / ${p.crumb}</div>
+        ${p.body}
+      </div>
+    `;
+  }
+
   function render404(slug) {
     main.innerHTML = `
       <div class="page">
@@ -994,6 +1083,9 @@
     D.strategies.forEach(s => index.push({ title: s.title, sub: 'Strategy', href: '#/strategies/' + s.id }));
     D.patches.forEach(p    => index.push({ title: 'Patch ' + p.version, sub: 'Patch', href: '#/patches' }));
     Object.entries(D.pages).forEach(([k, v]) => index.push({ title: v.title, sub: 'Page', href: '#/' + k }));
+    index.push({ title: 'About GameWikiHub Mewgenics Wiki', sub: 'Site Info', href: '#/about' });
+    index.push({ title: 'Privacy Policy', sub: 'Site Info', href: '#/privacy-policy' });
+    index.push({ title: 'Contact', sub: 'Site Info', href: '#/contact' });
     return index;
   }
 

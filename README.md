@@ -26,6 +26,7 @@ mewgenics-wiki/
 - **Persistent filter state** via `localStorage`.
 - **Mobile-friendly** with collapsible side nav.
 - **Patch notes log** so users know what's current.
+- **Legal/compliance pages** for About, Privacy Policy, and Contact before enabling ads.
 - **Dark theme** because game wikis live in dark mode.
 
 ## Adding content
@@ -153,6 +154,16 @@ images:
 
 The wiki uses the image when present and falls back to the SVG sprite
 automatically — no code changes required.
+
+## Legal pages before ads
+
+This version includes these hash-routed pages:
+
+- `#/about`
+- `#/privacy-policy`
+- `#/contact`
+
+Before applying for AdSense, update the placeholder contact email on the Contact page in `js/app.js`, then make sure these pages are linked in the footer and reachable from the deployed site.
 
 ## Setting up Google AdSense
 
