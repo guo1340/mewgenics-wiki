@@ -1,60 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mewgenics Wiki</title>
-<meta name="description" content="Mewgenics Wiki — cats, genes, abilities, items, enemies, locations, and strategy.">
-<link rel="stylesheet" href="css/style.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='22' fill='%23f5a524'/%3E%3Cpath d='M32 38 L35 22 L42 34 Z' fill='%23f5a524'/%3E%3Cpath d='M68 38 L65 22 L58 34 Z' fill='%23f5a524'/%3E%3C/svg%3E">
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mewgenics Wiki</title>
+    <meta
+      name="description"
+      content="Mewgenics Wiki — cats, genes, abilities, items, enemies, locations, and strategy."
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='22' fill='%23f5a524'/%3E%3Cpath d='M32 38 L35 22 L42 34 Z' fill='%23f5a524'/%3E%3Cpath d='M68 38 L65 22 L58 34 Z' fill='%23f5a524'/%3E%3C/svg%3E"
+    />
 
-<!-- ============================================
+    <!-- ============================================
      Google AdSense
      To enable ads: replace ca-pub-XXXXXXXXXXXXXXXX
      with your publisher ID, then uncomment.
      ============================================ -->
-<!--
+    <!--
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
         crossorigin="anonymous"></script>
 -->
-</head>
-<body>
+  </head>
+  <body>
+    <header class="site">
+      <a class="logo" href="/">MEWGENICS<small>WIKI · unofficial</small></a>
+      <div class="search">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search cats, genes, items, abilities…"
+          autocomplete="off"
+        />
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <nav class="top">
+        <a href="/cats">Cats</a>
+        <a href="/abilities">Abilities</a>
+        <a href="/items">Items</a>
+        <a href="/enemies">Enemies</a>
+        <a href="/combat">Combat</a>
+        <a href="/about">About</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        ☰
+      </button>
+    </header>
 
-<header class="site">
-  <a class="logo" href="#/">MEWGENICS<small>WIKI · unofficial</small></a>
-  <div class="search">
-    <input type="text" id="searchInput" placeholder="Search cats, genes, items, abilities…" autocomplete="off">
-    <div class="search-results" id="searchResults"></div>
-  </div>
-  <nav class="top">
-    <a href="#/cats">Cats</a>
-    <a href="#/abilities">Abilities</a>
-    <a href="#/items">Items</a>
-    <a href="#/enemies">Enemies</a>
-    <a href="#/combat">Combat</a>
-    <a href="#/about">About</a>
-  </nav>
-  <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
-</header>
+    <div class="layout">
+      <aside class="left" id="leftNav"></aside>
+      <main id="main">
+        <div class="loading">Loading…</div>
+      </main>
+      <aside class="right" id="rightNav"></aside>
+    </div>
 
-<div class="layout">
-  <aside class="left" id="leftNav"></aside>
-  <main id="main">
-    <div class="loading">Loading…</div>
-  </main>
-  <aside class="right" id="rightNav"></aside>
-</div>
+    <footer class="site">
+      <nav class="footer-links" aria-label="Site information">
+        <a href="/about">About</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <p>
+        Unofficial fan wiki · Mewgenics is © its respective developers ·
+        GameWikiHub · &copy; 2026. All rights reserved.
+      </p>
+    </footer>
 
-<footer class="site">
-  <nav class="footer-links" aria-label="Site information">
-    <a href="#/about">About</a>
-    <a href="#/privacy-policy">Privacy Policy</a>
-    <a href="#/contact">Contact</a>
-  </nav>
-  <p>Unofficial fan wiki · Mewgenics is © its respective developers · GameWikiHub · &copy; 2026. All rights reserved.</p>
-</footer>
-
-<script src="js/data.js"></script>
-<script src="js/app.js"></script>
-</body>
+    <script src="/js/data.js"></script>
+    <script src="/js/app.js"></script>
+  </body>
 </html>

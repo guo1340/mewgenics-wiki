@@ -107,29 +107,29 @@
     leftNav.innerHTML = `
       <h3>Game Basics</h3>
       <ul>
-        <li><a href="#/" data-r="/">Overview</a></li>
-        <li><a href="#/getting-started" data-r="/getting-started">Getting Started</a></li>
+        <li><a href="/" data-r="/">Overview</a></li>
+        <li><a href="/getting-started" data-r="/getting-started">Getting Started</a></li>
       </ul>
       <h3>Mechanics</h3>
       <ul>
-        <li><a href="#/cats" data-r="/cats">Cats</a></li>
-        <li><a href="#/genetics" data-r="/genetics">Genetics</a></li>
-        <li><a href="#/breeding" data-r="/breeding">Breeding</a></li>
-        <li><a href="#/combat" data-r="/combat">Combat</a></li>
-        <li><a href="#/abilities" data-r="/abilities">Abilities</a></li>
+        <li><a href="/cats" data-r="/cats">Cats</a></li>
+        <li><a href="/genetics" data-r="/genetics">Genetics</a></li>
+        <li><a href="/breeding" data-r="/breeding">Breeding</a></li>
+        <li><a href="/combat" data-r="/combat">Combat</a></li>
+        <li><a href="/abilities" data-r="/abilities">Abilities</a></li>
       </ul>
       <h3>Database</h3>
       <ul>
-        <li><a href="#/items" data-r="/items">Items</a></li>
-        <li><a href="#/enemies" data-r="/enemies">Enemies</a></li>
-        <li><a href="#/locations" data-r="/locations">Locations</a></li>
-        <li><a href="#/status" data-r="/status">Status Effects</a></li>
-        <li><a href="#/genes" data-r="/genes">Gene Index</a></li>
+        <li><a href="/items" data-r="/items">Items</a></li>
+        <li><a href="/enemies" data-r="/enemies">Enemies</a></li>
+        <li><a href="/locations" data-r="/locations">Locations</a></li>
+        <li><a href="/status" data-r="/status">Status Effects</a></li>
+        <li><a href="/genes" data-r="/genes">Gene Index</a></li>
       </ul>
       <h3>Community</h3>
       <ul>
-        <li><a href="#/strategies" data-r="/strategies">Strategies</a></li>
-        <li><a href="#/patches" data-r="/patches">Patch Notes</a></li>
+        <li><a href="/strategies" data-r="/strategies">Strategies</a></li>
+        <li><a href="/patches" data-r="/patches">Patch Notes</a></li>
       </ul>
     `;
     leftNav.querySelectorAll('a').forEach((a) => {
@@ -144,29 +144,29 @@
     let extra = '';
     if (route.startsWith('/cats/')) {
       extra = `<h3>This Cat</h3><ul>
-        <li><a href="#/cats">Back to Cats</a></li>
-        <li><a href="#/genetics">How genes work</a></li>
-        <li><a href="#/breeding">Breeding rules</a></li>
+        <li><a href="/cats">Back to Cats</a></li>
+        <li><a href="/genetics">How genes work</a></li>
+        <li><a href="/breeding">Breeding rules</a></li>
       </ul>`;
     } else if (route.startsWith('/abilities')) {
       extra = `<h3>Related</h3><ul>
-        <li><a href="#/combat">Combat overview</a></li>
-        <li><a href="#/status">Status effects</a></li>
+        <li><a href="/combat">Combat overview</a></li>
+        <li><a href="/status">Status effects</a></li>
       </ul>`;
     } else if (route.startsWith('/items')) {
       extra = `<h3>Related</h3><ul>
-        <li><a href="#/locations">Where loot drops</a></li>
-        <li><a href="#/strategies">Build guides</a></li>
+        <li><a href="/locations">Where loot drops</a></li>
+        <li><a href="/strategies">Build guides</a></li>
       </ul>`;
     }
     rightNav.innerHTML = `
       <h3>Quick Links</h3>
       <ul>
-        <li><a href="#/cats">All cats</a></li>
-        <li><a href="#/abilities">All abilities</a></li>
-        <li><a href="#/items">All items</a></li>
-        <li><a href="#/enemies">Bestiary</a></li>
-        <li><a href="#/strategies">Strategies</a></li>
+        <li><a href="/cats">All cats</a></li>
+        <li><a href="/abilities">All abilities</a></li>
+        <li><a href="/items">All items</a></li>
+        <li><a href="/enemies">Bestiary</a></li>
+        <li><a href="/strategies">Strategies</a></li>
       </ul>
       ${extra}
       <h3>Did you know?</h3>
@@ -184,7 +184,7 @@
   /* ============================================================
      ROUTER
      ============================================================ */
-  function parseRoute() { return location.hash.replace(/^#/, '') || '/'; }
+  function parseRoute() { return location.pathname || '/'; }
 
   function navigate() {
     const route = parseRoute();
@@ -237,15 +237,15 @@
 
       <h3>Jump in</h3>
       <div class="cards">
-        <a class="card" href="#/getting-started"><div class="icon">${SVG.paw}</div><h4>Getting Started</h4><p>Your first run, in plain English.</p></a>
-        <a class="card" href="#/cats"><div class="icon">${SVG.cat}</div><h4>Cats Database</h4><p>${D.cats.length} entries with stats and abilities.</p></a>
-        <a class="card" href="#/genetics"><div class="icon">${SVG.dna}</div><h4>Genetics</h4><p>How genes pass, mutate, and stack.</p></a>
-        <a class="card" href="#/breeding"><div class="icon">${SVG.heart}</div><h4>Breeding</h4><p>Pairings, litters, and inheritance.</p></a>
-        <a class="card" href="#/combat"><div class="icon">${SVG.swords}</div><h4>Combat</h4><p>AP, positioning, status, matchups.</p></a>
-        <a class="card" href="#/abilities"><div class="icon">${SVG.sparkle}</div><h4>Abilities</h4><p>${D.abilities.length} attacks &amp; spells.</p></a>
-        <a class="card" href="#/items"><div class="icon">${SVG.pouch}</div><h4>Items</h4><p>${D.items.length} pieces of gear &amp; treats.</p></a>
-        <a class="card" href="#/enemies"><div class="icon">${SVG.skull}</div><h4>Bestiary</h4><p>${D.enemies.length} enemies &amp; their tactics.</p></a>
-        <a class="card" href="#/strategies"><div class="icon">${SVG.book}</div><h4>Strategies</h4><p>Builds &amp; comp ideas.</p></a>
+        <a class="card" href="/getting-started"><div class="icon">${SVG.paw}</div><h4>Getting Started</h4><p>Your first run, in plain English.</p></a>
+        <a class="card" href="/cats"><div class="icon">${SVG.cat}</div><h4>Cats Database</h4><p>${D.cats.length} entries with stats and abilities.</p></a>
+        <a class="card" href="/genetics"><div class="icon">${SVG.dna}</div><h4>Genetics</h4><p>How genes pass, mutate, and stack.</p></a>
+        <a class="card" href="/breeding"><div class="icon">${SVG.heart}</div><h4>Breeding</h4><p>Pairings, litters, and inheritance.</p></a>
+        <a class="card" href="/combat"><div class="icon">${SVG.swords}</div><h4>Combat</h4><p>AP, positioning, status, matchups.</p></a>
+        <a class="card" href="/abilities"><div class="icon">${SVG.sparkle}</div><h4>Abilities</h4><p>${D.abilities.length} attacks &amp; spells.</p></a>
+        <a class="card" href="/items"><div class="icon">${SVG.pouch}</div><h4>Items</h4><p>${D.items.length} pieces of gear &amp; treats.</p></a>
+        <a class="card" href="/enemies"><div class="icon">${SVG.skull}</div><h4>Bestiary</h4><p>${D.enemies.length} enemies &amp; their tactics.</p></a>
+        <a class="card" href="/strategies"><div class="icon">${SVG.book}</div><h4>Strategies</h4><p>Builds &amp; comp ideas.</p></a>
       </div>
 
       ${adSlot('in-article')}
@@ -260,7 +260,7 @@
           <div class="patch-meta"><span class="ver">${esc(D.patches[0].version)}</span><span>${esc(D.patches[0].date)}</span></div>
           <ul>${D.patches[0].changes.map((c) => `<li>${esc(c)}</li>`).join('')}</ul>
         </div>
-        <p><a href="#/patches">View full patch history →</a></p>
+        <p><a href="/patches">View full patch history →</a></p>
       </div>
     `;
   }
@@ -268,7 +268,7 @@
   function renderCatCardInline(c) {
     if (!c) return '';
     return `
-      <a class="card" href="#/cats/${esc(c.id)}" style="display:flex;gap:14px;align-items:center;">
+      <a class="card" href="/cats/${esc(c.id)}" style="display:flex;gap:14px;align-items:center;">
         ${spriteMedium(c)}
         <div style="flex:1;min-width:0;">
           <h4>${esc(c.name)} ${tag(c.rarity, c.rarity)}</h4>
@@ -373,7 +373,7 @@
         ? `<tr><td colspan="8"><div class="empty-result">No cats match those filters.</div></td></tr>`
         : rows.map(c => `
           <tr>
-            <td><a href="#/cats/${esc(c.id)}" class="row-link">${spriteMini(c)} ${esc(c.name)}</a></td>
+            <td><a href="/cats/${esc(c.id)}" class="row-link">${spriteMini(c)} ${esc(c.name)}</a></td>
             <td>${tag(c.type, c.type)}</td>
             <td>${tag(c.rarity, c.rarity)}</td>
             <td class="num">${c.hp}</td>
@@ -431,7 +431,7 @@
     main.innerHTML = `
       ${adSlot('banner')}
       <div class="page">
-        <div class="breadcrumb"><a href="#/cats">Cats</a> / ${esc(c.name)}</div>
+        <div class="breadcrumb"><a href="/cats">Cats</a> / ${esc(c.name)}</div>
         <div class="detail-grid">
           <div>
             <h1>${esc(c.name)} ${tag(c.rarity, c.rarity)}</h1>
@@ -448,14 +448,14 @@
             <div class="chip-list">
               ${(c.abilities || []).map(aid => {
                 const a = lookupAbility(aid);
-                return a ? `<a class="chip" href="#/abilities/${esc(a.id)}">${esc(a.name)} ${tag(a.type, a.type)}</a>` : '';
+                return a ? `<a class="chip" href="/abilities/${esc(a.id)}">${esc(a.name)} ${tag(a.type, a.type)}</a>` : '';
               }).join('')}
             </div>
             <h3>Traits</h3>
             <div class="chip-list">${(c.traits || []).map(t => `<span class="chip">${esc(t)}</span>`).join('')}</div>
             <h3>Genes</h3>
             <p>${(c.genes || []).map(g => `<code>${esc(g)}</code>`).join(' · ')}</p>
-            <p style="color:var(--muted);font-size:13px;">See <a href="#/genetics">Genetics</a> for how to read these.</p>
+            <p style="color:var(--muted);font-size:13px;">See <a href="/genetics">Genetics</a> for how to read these.</p>
             <h3>Suggested role</h3>
             <p>${esc(c.role)}</p>
           </div>
@@ -535,14 +535,14 @@
         ? `<tr><td colspan="6"><div class="empty-result">No abilities match.</div></td></tr>`
         : rows.map(a => `
           <tr>
-            <td><a href="#/abilities/${esc(a.id)}" class="row-link">${esc(a.name)}</a></td>
+            <td><a href="/abilities/${esc(a.id)}" class="row-link">${esc(a.name)}</a></td>
             <td>${tag(a.type, a.type)}</td>
             <td class="num">${a.cost}</td>
             <td class="num">${a.range}</td>
             <td class="num">${a.damage || '—'}</td>
             <td>${(a.effects || []).map(e => {
               const s = lookupStatus(e);
-              return s ? `<a href="#/status">${tag(s.name)}</a>` : tag(e);
+              return s ? `<a href="/status">${tag(s.name)}</a>` : tag(e);
             }).join(' ')}</td>
           </tr>
         `).join('');
@@ -576,7 +576,7 @@
     main.innerHTML = `
       ${adSlot('banner')}
       <div class="page">
-        <div class="breadcrumb"><a href="#/abilities">Abilities</a> / ${esc(a.name)}</div>
+        <div class="breadcrumb"><a href="/abilities">Abilities</a> / ${esc(a.name)}</div>
         <div class="detail-grid">
           <div>
             <h1>${esc(a.name)} ${tag(a.type, a.type)}</h1>
@@ -584,7 +584,7 @@
             ${a.tip ? `<div class="callout tip"><strong>Tip:</strong> ${esc(a.tip)}</div>` : ''}
             <h3>Used by</h3>
             <div class="chip-list">
-              ${usedBy.length ? usedBy.map(c => `<a class="chip" href="#/cats/${esc(c.id)}">${spriteMini(c)} ${esc(c.name)}</a>`).join('')
+              ${usedBy.length ? usedBy.map(c => `<a class="chip" href="/cats/${esc(c.id)}">${spriteMini(c)} ${esc(c.name)}</a>`).join('')
                               : '<span class="qd">No cats start with this ability.</span>'}
             </div>
             <h3>Applied effects</h3>
@@ -592,7 +592,7 @@
               ${(a.effects || []).length
                 ? (a.effects || []).map(e => {
                     const s = lookupStatus(e);
-                    return s ? `<a class="chip" href="#/status">${esc(s.name)}</a>` : `<span class="chip">${esc(e)}</span>`;
+                    return s ? `<a class="chip" href="/status">${esc(s.name)}</a>` : `<span class="chip">${esc(e)}</span>`;
                   }).join('')
                 : '<span class="qd">None.</span>'}
             </div>
@@ -678,7 +678,7 @@
         ? `<tr><td colspan="4"><div class="empty-result">No items match.</div></td></tr>`
         : rows.map(i => `
           <tr>
-            <td><a href="#/items/${esc(i.id)}" class="row-link">${esc(i.name)}</a></td>
+            <td><a href="/items/${esc(i.id)}" class="row-link">${esc(i.name)}</a></td>
             <td>${tag(i.slot)}</td>
             <td>${tag(i.rarity, i.rarity)}</td>
             <td>${(i.effects || []).map(e => `<span class="chip">${esc(e)}</span>`).join(' ')}</td>
@@ -715,7 +715,7 @@
     main.innerHTML = `
       ${adSlot('banner')}
       <div class="page">
-        <div class="breadcrumb"><a href="#/items">Items</a> / ${esc(i.name)}</div>
+        <div class="breadcrumb"><a href="/items">Items</a> / ${esc(i.name)}</div>
         <div class="detail-grid">
           <div>
             <h1>${esc(i.name)} ${tag(i.rarity, i.rarity)}</h1>
@@ -757,14 +757,14 @@
           <tbody>
             ${D.enemies.map(e => `
               <tr>
-                <td><a href="#/enemies/${esc(e.id)}" class="row-link">${esc(e.name)}</a></td>
+                <td><a href="/enemies/${esc(e.id)}" class="row-link">${esc(e.name)}</a></td>
                 <td>${tag(e.type, e.type)}</td>
                 <td class="num">${e.hp}</td>
                 <td class="num">${e.speed}</td>
                 <td>${tag(e.threat, e.threat === 'boss' ? 'legendary' : (e.threat === 'high' ? 'epic' : (e.threat === 'medium' ? 'uncommon' : 'common')))}</td>
                 <td>${(e.locations || []).map(l => {
                   const loc = lookupLocation(l);
-                  return loc ? `<a href="#/locations/${esc(loc.id)}">${esc(loc.name)}</a>` : esc(l);
+                  return loc ? `<a href="/locations/${esc(loc.id)}">${esc(loc.name)}</a>` : esc(l);
                 }).join(', ')}</td>
               </tr>
             `).join('')}
@@ -781,7 +781,7 @@
     main.innerHTML = `
       ${adSlot('banner')}
       <div class="page">
-        <div class="breadcrumb"><a href="#/enemies">Enemies</a> / ${esc(e.name)}</div>
+        <div class="breadcrumb"><a href="/enemies">Enemies</a> / ${esc(e.name)}</div>
         <div class="detail-grid">
           <div>
             <h1>${esc(e.name)} ${tag(e.threat, e.threat === 'boss' ? 'legendary' : '')}</h1>
@@ -794,7 +794,7 @@
             <div class="chip-list">
               ${(e.locations || []).map(l => {
                 const loc = lookupLocation(l);
-                return loc ? `<a class="chip" href="#/locations/${esc(loc.id)}">${esc(loc.name)}</a>` : '';
+                return loc ? `<a class="chip" href="/locations/${esc(loc.id)}">${esc(loc.name)}</a>` : '';
               }).join('')}
             </div>
           </div>
@@ -826,7 +826,7 @@
         <p>The world is divided into biomes. Each has its own enemy mix, treats, and difficulty curve.</p>
         <div class="cards">
           ${D.locations.map(l => `
-            <a class="card" href="#/locations/${esc(l.id)}">
+            <a class="card" href="/locations/${esc(l.id)}">
               <h4>${esc(l.name)} ${tag(l.tier, l.tier === 'high' ? 'epic' : (l.tier === 'mid' ? 'rare' : (l.tier === 'low' ? 'uncommon' : 'common')))}</h4>
               <p>${esc(l.description.slice(0, 100))}…</p>
             </a>
@@ -843,7 +843,7 @@
     main.innerHTML = `
       ${adSlot('banner')}
       <div class="page">
-        <div class="breadcrumb"><a href="#/locations">Locations</a> / ${esc(l.name)}</div>
+        <div class="breadcrumb"><a href="/locations">Locations</a> / ${esc(l.name)}</div>
         <h1>${esc(l.name)} ${tag(l.tier)}</h1>
         <p>${esc(l.description)}</p>
         <div class="callout tip"><strong>Tip:</strong> ${esc(l.tips)}</div>
@@ -851,7 +851,7 @@
         <div class="chip-list">
           ${(l.enemies || []).map(eid => {
             const en = lookupEnemy(eid);
-            return en ? `<a class="chip" href="#/enemies/${esc(en.id)}">${esc(en.name)} ${tag(en.threat)}</a>` : '';
+            return en ? `<a class="chip" href="/enemies/${esc(en.id)}">${esc(en.name)} ${tag(en.threat)}</a>` : '';
           }).join('')}
         </div>
         <h3>Notable drops</h3>
@@ -898,7 +898,7 @@
       <div class="page">
         <h1>Gene Index</h1>
         <div class="breadcrumb">Home / Genes</div>
-        <p>Every gene tracked by the breeding system. See <a href="#/genetics">Genetics</a> for inheritance rules and <a href="#/breeding">Breeding</a> for how to combine them.</p>
+        <p>Every gene tracked by the breeding system. See <a href="/genetics">Genetics</a> for inheritance rules and <a href="/breeding">Breeding</a> for how to combine them.</p>
         <table class="data">
           <thead><tr>
             <th>Gene</th><th>Dominant</th><th>Recessive</th><th>Effect</th>
@@ -928,7 +928,7 @@
         <p>Community-curated team comps and tactics. To submit one, edit <code>js/data.js</code> and open a PR.</p>
         <div class="cards">
           ${D.strategies.map(s => `
-            <a class="card" href="#/strategies/${esc(s.id)}">
+            <a class="card" href="/strategies/${esc(s.id)}">
               <h4>${esc(s.title)}</h4>
               <p>${esc(s.summary)}</p>
               <div style="margin-top:8px;">${(s.tags || []).map(t => tag(t)).join(' ')}</div>
@@ -946,7 +946,7 @@
     main.innerHTML = `
       ${adSlot('banner')}
       <div class="page">
-        <div class="breadcrumb"><a href="#/strategies">Strategies</a> / ${esc(s.title)}</div>
+        <div class="breadcrumb"><a href="/strategies">Strategies</a> / ${esc(s.title)}</div>
         <h1>${esc(s.title)}</h1>
         <p style="color:var(--muted);">By ${esc(s.author)} · ${(s.tags || []).map(t => tag(t)).join(' ')}</p>
         <p><strong>${esc(s.summary)}</strong></p>
@@ -1014,7 +1014,7 @@
           <h3>Changes to this policy</h3>
           <p>We may update this Privacy Policy as the site grows, especially when new analytics, advertising, contact, or community features are added.</p>
           <h3>Contact</h3>
-          <p>Questions about this policy can be sent through the <a href="#/contact">Contact page</a>.</p>
+          <p>Questions about this policy can be sent through the <a href="/contact">Contact page</a>.</p>
         `
       },
       'contact': {
@@ -1052,7 +1052,7 @@
       <div class="page">
         <h1>Not found</h1>
         <p>No wiki entry for <code>${esc(slug)}</code>.</p>
-        <p><a href="#/">← Back to home</a></p>
+        <p><a href="/">← Back to home</a></p>
       </div>
     `;
   }
@@ -1062,23 +1062,46 @@
      ============================================================ */
   function buildSearchIndex() {
     const index = [];
-    D.cats.forEach(c       => index.push({ title: c.name, sub: 'Cat',      href: '#/cats/' + c.id }));
-    D.abilities.forEach(a  => index.push({ title: a.name, sub: 'Ability',  href: '#/abilities/' + a.id }));
-    D.items.forEach(i      => index.push({ title: i.name, sub: 'Item',     href: '#/items/' + i.id }));
-    D.enemies.forEach(e    => index.push({ title: e.name, sub: 'Enemy',    href: '#/enemies/' + e.id }));
-    D.locations.forEach(l  => index.push({ title: l.name, sub: 'Location', href: '#/locations/' + l.id }));
-    D.statuses.forEach(s   => index.push({ title: s.name, sub: 'Status',   href: '#/status' }));
-    D.genes.forEach(g      => index.push({ title: g.name, sub: 'Gene',     href: '#/genes' }));
-    D.strategies.forEach(s => index.push({ title: s.title, sub: 'Strategy', href: '#/strategies/' + s.id }));
-    D.patches.forEach(p    => index.push({ title: 'Patch ' + p.version, sub: 'Patch', href: '#/patches' }));
-    Object.entries(D.pages).forEach(([k, v]) => index.push({ title: v.title, sub: 'Page', href: '#/' + k }));
-    index.push({ title: 'About GameWikiHub Mewgenics Wiki', sub: 'Site Info', href: '#/about' });
-    index.push({ title: 'Privacy Policy', sub: 'Site Info', href: '#/privacy-policy' });
-    index.push({ title: 'Contact', sub: 'Site Info', href: '#/contact' });
+    D.cats.forEach(c       => index.push({ title: c.name, sub: 'Cat',      href: '/cats/' + c.id }));
+    D.abilities.forEach(a  => index.push({ title: a.name, sub: 'Ability',  href: '/abilities/' + a.id }));
+    D.items.forEach(i      => index.push({ title: i.name, sub: 'Item',     href: '/items/' + i.id }));
+    D.enemies.forEach(e    => index.push({ title: e.name, sub: 'Enemy',    href: '/enemies/' + e.id }));
+    D.locations.forEach(l  => index.push({ title: l.name, sub: 'Location', href: '/locations/' + l.id }));
+    D.statuses.forEach(s   => index.push({ title: s.name, sub: 'Status',   href: '/status' }));
+    D.genes.forEach(g      => index.push({ title: g.name, sub: 'Gene',     href: '/genes' }));
+    D.strategies.forEach(s => index.push({ title: s.title, sub: 'Strategy', href: '/strategies/' + s.id }));
+    D.patches.forEach(p    => index.push({ title: 'Patch ' + p.version, sub: 'Patch', href: '/patches' }));
+    Object.entries(D.pages).forEach(([k, v]) => index.push({ title: v.title, sub: 'Page', href: '/' + k }));
+    index.push({ title: 'About GameWikiHub Mewgenics Wiki', sub: 'Site Info', href: '/about' });
+    index.push({ title: 'Privacy Policy', sub: 'Site Info', href: '/privacy-policy' });
+    index.push({ title: 'Contact', sub: 'Site Info', href: '/contact' });
     return index;
   }
 
   const searchIndex = buildSearchIndex();
+
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (!a) return;
+
+    const href = a.getAttribute('href');
+    if (!href) return;
+
+    if (
+      href.startsWith('/') &&
+      !href.startsWith('//') &&
+      !a.hasAttribute('download') &&
+      a.target !== '_blank'
+    ) {
+      e.preventDefault();
+      history.pushState({}, '', href);
+      leftNav.classList.remove('open');
+      navigate();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  window.addEventListener('popstate', navigate);
 
   function runSearch(q) {
     if (!q) { searchResults.classList.remove('open'); return; }
@@ -1129,10 +1152,5 @@
     try { localStorage.setItem('mw:' + key, JSON.stringify(state)); } catch (e) {}
   }
 
-  window.addEventListener('hashchange', () => {
-    leftNav.classList.remove('open');
-    navigate();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
   navigate();
 })();
