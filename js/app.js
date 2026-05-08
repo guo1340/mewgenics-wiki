@@ -1022,7 +1022,6 @@
         crumb: 'Contact',
         body: `
           <p>Use this page to report incorrect wiki information, request removals, suggest new pages, or ask questions about GameWikiHub Mewgenics Wiki.</p>
-          <div class="callout tip"><strong>Before publishing:</strong> replace the placeholder email below with your real contact email, or link to your GitHub Issues page.</div>
           <h3>Email</h3>
           <p><a href="mailto:contact@gamewikihub.com">contact@gamewikihub.com</a></p>
           <h3>What to include</h3>
