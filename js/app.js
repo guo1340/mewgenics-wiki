@@ -131,13 +131,6 @@
         <li><a href="#/strategies" data-r="/strategies">Strategies</a></li>
         <li><a href="#/patches" data-r="/patches">Patch Notes</a></li>
       </ul>
-      <h3>Site Info</h3>
-      <ul>
-        <li><a href="#/about" data-r="/about">About</a></li>
-        <li><a href="#/privacy-policy" data-r="/privacy-policy">Privacy Policy</a></li>
-        <li><a href="#/contact" data-r="/contact">Contact</a></li>
-      </ul>
-      ${adSlot('half-page')}
     `;
     leftNav.querySelectorAll('a').forEach((a) => {
       const r = a.getAttribute('data-r');
@@ -175,19 +168,16 @@
         <li><a href="#/enemies">Bestiary</a></li>
         <li><a href="#/strategies">Strategies</a></li>
       </ul>
-      ${adSlot('rectangle')}
       ${extra}
       <h3>Did you know?</h3>
       <p class="qd">Recessive genes only express when both alleles are lowercase. Want a rare trait? Inbreed carefully.</p>
-      ${adSlot('rectangle')}
-      <h3>Site Info</h3>
-      <ul>
-        <li><a href="#/about">About this wiki</a></li>
-        <li><a href="#/privacy-policy">Privacy Policy</a></li>
-        <li><a href="#/contact">Contact</a></li>
-      </ul>
       <h3>Contribute</h3>
-      <p class="qd">Found wrong info? Edit <code>js/data.js</code> in the GitHub repo and open a PR.</p>
+      <p class="qd">
+      Found incorrect information or want to improve the wiki?
+      Visit the GitHub repository and submit a pull request.
+      </p>
+      <a href="https://github.com/guo1340/mewgenics-wiki.git">GitHub repository</a>
+      ${adSlot('rectangle')}
     `;
   }
 
