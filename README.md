@@ -1,6 +1,6 @@
 # Mewgenics Wiki
 
-A static, frontend-only fan wiki for Mewgenics. No database, no build step, no
+A static, frontend-only Mewgenics wiki. No database, no build step, no
 backend. Just HTML, CSS, and vanilla JavaScript — drop it on any static host.
 
 ## What's inside
@@ -126,6 +126,58 @@ Then visit `http://localhost:8000`.
 
 5. **Custom domain (optional)**: Pages → your project → Custom domains → Set up a domain.
 
+## Adding real game images
+
+The wiki ships with stylized SVG sprites as fallbacks. To swap in real game
+images:
+
+1. Create an `img/` folder structure in the repo:
+   ```
+   img/
+   ├── cats/
+   ├── items/
+   ├── abilities/
+   ├── enemies/
+   └── locations/
+   ```
+2. Drop your image files in (PNG or WebP recommended, ~256×256 or square).
+3. In `js/data.js`, add an `image` field to the entry:
+   ```js
+   {
+     id: 'sir-whiskers',
+     name: 'Sir Whiskers',
+     image: 'img/cats/sir-whiskers.png',  // ← add this
+     ...
+   }
+   ```
+
+The wiki uses the image when present and falls back to the SVG sprite
+automatically — no code changes required.
+
+## Setting up Google AdSense
+
+Ad slots are already laid out across the site (top banner per page, two
+rectangles in the right sidebar, a half-page in the left sidebar, and an
+in-article slot at the bottom of every page). They render as inert
+"Advertisement" placeholders until you wire up AdSense.
+
+To enable ads:
+
+1. Sign up at <https://www.google.com/adsense> and get your publisher ID
+   (looks like `ca-pub-1234567890123456`).
+2. In `index.html`, find the AdSense block in `<head>`, replace the
+   placeholder publisher ID, and **uncomment** the `<script>` tag.
+3. In your AdSense dashboard, create ad units (one each for: banner,
+   rectangle, half-page, in-article).
+4. In `js/app.js`, find the `adSlot()` function. Inside it, the commented-out
+   `<ins class="adsbygoogle">` block is the AdSense snippet. Uncomment it and
+   replace `data-ad-client` and `data-ad-slot` with your real values. You can
+   either map each `format` to a different slot ID (recommended) or use a
+   single auto-format unit for everything.
+
+Until step 4 is done, the placeholders stay visible — useful for previewing
+layout without actually serving ads.
+
 ## Roadmap (when you're ready to upgrade)
 
 The static-only design has hard ceilings. When you hit them, here's where to go:
@@ -135,12 +187,13 @@ The static-only design has hard ceilings. When you hit them, here's where to go:
 | Let users edit pages | Switch to Astro/Hugo + GitHub PRs, or migrate to MediaWiki |
 | Comments on pages | Giscus (GitHub Discussions) — still no backend |
 | User accounts / favorites | Cloudflare Workers + KV or D1 (free tier) |
-| Real images / sprites | Drop them in `/img`, reference from `data.js` |
 | Better search | Add Lunr.js or Pagefind for fuzzy + typo-tolerant search |
 | Multilingual | Split `data.js` into `data.en.js`, `data.ja.js` etc. and switch on a UI toggle |
 
-## License + disclaimer
+## License
 
-Mewgenics is © its respective developers. This is an unofficial fan-built wiki —
-all content in `data.js` is community-contributed and should be treated as
-unverified placeholder until cross-checked against the actual game.
+&copy; 2026. All rights reserved.
+
+All content in this repository — including the wiki text, structure, code, and
+data files — is reserved by the site owner. Do not redistribute without
+permission.

@@ -428,22 +428,109 @@ table.data .row-link { color: var(--text); font-weight: 600; }
   font-size: 13px;
   overflow: hidden;
 }
-.infobox .sprite {
-  width: 100%;
-  aspect-ratio: 1;
+
+/* ============================================
+   SPRITES (SVG / image fallback)
+   ============================================ */
+.sprite {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 90px;
+  color: var(--text);
   background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
+}
+.sprite svg { width: 70%; height: 70%; display: block; }
+.sprite img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.sprite-lg {
+  width: 100%;
+  aspect-ratio: 1;
   border-bottom: 1px solid var(--border);
 }
-.infobox .sprite.fire   { background: radial-gradient(circle, rgba(255,138,76,0.25), var(--bg-3)); }
-.infobox .sprite.water  { background: radial-gradient(circle, rgba(91,163,255,0.25), var(--bg-3)); }
-.infobox .sprite.earth  { background: radial-gradient(circle, rgba(197,163,107,0.25), var(--bg-3)); }
-.infobox .sprite.dark   { background: radial-gradient(circle, rgba(183,135,255,0.25), var(--bg-3)); }
-.infobox .sprite.light  { background: radial-gradient(circle, rgba(255,224,122,0.25), var(--bg-3)); }
-.infobox .sprite.air    { background: radial-gradient(circle, rgba(139,227,255,0.25), var(--bg-3)); }
+.sprite-md {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.sprite-mini {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 4px;
+  background: var(--bg-3);
+  color: var(--text);
+}
+.sprite-mini svg { width: 80%; height: 80%; }
+.sprite-mini img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+/* Type tints — drives currentColor for SVG fill + bg gradient */
+.sprite.fire,  .sprite-mini.fire   { color: var(--type-fire); }
+.sprite.water, .sprite-mini.water  { color: var(--type-water); }
+.sprite.earth, .sprite-mini.earth  { color: var(--type-earth); }
+.sprite.dark,  .sprite-mini.dark   { color: var(--type-dark); }
+.sprite.light, .sprite-mini.light  { color: var(--type-light); }
+.sprite.air,   .sprite-mini.air    { color: var(--type-air); }
+
+.sprite-lg.fire   { background: radial-gradient(circle, rgba(255,138,76,0.25), var(--bg-3)); }
+.sprite-lg.water  { background: radial-gradient(circle, rgba(91,163,255,0.25), var(--bg-3)); }
+.sprite-lg.earth  { background: radial-gradient(circle, rgba(197,163,107,0.25), var(--bg-3)); }
+.sprite-lg.dark   { background: radial-gradient(circle, rgba(183,135,255,0.25), var(--bg-3)); }
+.sprite-lg.light  { background: radial-gradient(circle, rgba(255,224,122,0.25), var(--bg-3)); }
+.sprite-lg.air    { background: radial-gradient(circle, rgba(139,227,255,0.25), var(--bg-3)); }
+
+.sprite-lg.common    { background: radial-gradient(circle, rgba(154,160,173,0.18), var(--bg-3)); }
+.sprite-lg.uncommon  { background: radial-gradient(circle, rgba(110,231,163,0.20), var(--bg-3)); }
+.sprite-lg.rare      { background: radial-gradient(circle, rgba(91,163,255,0.20), var(--bg-3)); }
+.sprite-lg.epic      { background: radial-gradient(circle, rgba(183,135,255,0.20), var(--bg-3)); }
+.sprite-lg.legendary { background: radial-gradient(circle, rgba(245,165,36,0.22), var(--bg-3)); }
+
+/* Card icons (home page) */
+.card .icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+.card .icon svg { width: 100%; height: 100%; }
+
+/* ============================================
+   AD SLOTS — placeholders until AdSense is wired
+   ============================================ */
+.ad-slot {
+  background: var(--bg-3);
+  border: 1px dashed var(--border-light);
+  border-radius: 8px;
+  padding: 14px;
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  position: relative;
+}
+.ad-slot .ad-label {
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.ad-slot ins.adsbygoogle { display: block; width: 100%; }
+.ad-banner     { min-height: 100px; }
+.ad-rectangle  { min-height: 250px; }
+.ad-half-page  { min-height: 600px; margin-top: 18px; }
+.ad-in-article { min-height: 280px; }
+
+/* Quieter look in the sidebar */
+aside .ad-slot {
+  margin: 14px 0;
+  padding: 8px;
+}
 
 .infobox h4 {
   margin: 0;

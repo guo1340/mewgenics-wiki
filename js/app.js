@@ -1,6 +1,6 @@
 /* ============================================================
    Mewgenics Wiki — App
-   Hash router, page renderers, search, filters.
+   Hash router, page renderers, search, filters, ad slots.
    No external dependencies.
    ============================================================ */
 
@@ -20,9 +20,80 @@
   }[c]));
   const byId = (arr, id) => arr.find((x) => x.id === id);
   const tag = (text, cls) => `<span class="tag ${esc(cls || '')}">${esc(text)}</span>`;
-  const link = (href, text, attrs = '') =>
-    `<a href="${esc(href)}" ${attrs}>${esc(text)}</a>`;
+  const link = (href, text, attrs = '') => `<a href="${esc(href)}" ${attrs}>${esc(text)}</a>`;
   const titleCase = (s) => String(s || '').replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+  /* -------------------- icons & sprites --------------------
+     Inline SVG icons. Cats use the cat sprite, tinted by type.
+     Each entity supports an optional `image` field that wins
+     over the SVG fallback — drop a PNG into /img/cats/<id>.png
+     and add `image: 'img/cats/<id>.png'` in data.js.
+  ------------------------------------------------------------ */
+  const SVG = {
+    cat: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="50" cy="78" rx="22" ry="14" fill="currentColor"/>
+      <circle cx="50" cy="50" r="22" fill="currentColor"/>
+      <path d="M32 38 L35 22 L42 34 Z" fill="currentColor"/>
+      <path d="M68 38 L65 22 L58 34 Z" fill="currentColor"/>
+      <path d="M34 35 L37 26 L40 34 Z" fill="rgba(0,0,0,0.3)"/>
+      <path d="M66 35 L63 26 L60 34 Z" fill="rgba(0,0,0,0.3)"/>
+      <path d="M72 80 Q92 70 85 50" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <ellipse cx="41" cy="49" rx="3" ry="4" fill="#1a1a1a"/>
+      <ellipse cx="59" cy="49" rx="3" ry="4" fill="#1a1a1a"/>
+      <circle cx="42" cy="47" r="0.8" fill="#fff"/>
+      <circle cx="60" cy="47" r="0.8" fill="#fff"/>
+      <path d="M48 57 L52 57 L50 60 Z" fill="#1a1a1a"/>
+      <path d="M50 60 Q47 63 44 62" stroke="#1a1a1a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <path d="M50 60 Q53 63 56 62" stroke="#1a1a1a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </svg>`,
+    orb: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="50" cy="55" r="28" fill="currentColor" opacity="0.35"/><circle cx="50" cy="50" r="22" fill="currentColor"/><circle cx="43" cy="42" r="5" fill="rgba(255,255,255,0.7)"/></svg>`,
+    pouch: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M28 45 L30 85 Q30 90 35 90 L65 90 Q70 90 70 85 L72 45 Z" fill="currentColor"/><path d="M25 45 L75 45 L72 38 L28 38 Z" fill="currentColor" opacity="0.7"/><path d="M40 38 Q45 28 50 32 Q55 28 60 38" stroke="currentColor" stroke-width="2.5" fill="none"/><circle cx="50" cy="65" r="5" fill="rgba(255,255,255,0.6)"/></svg>`,
+    skull: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M28 45 Q28 25 50 25 Q72 25 72 45 L72 60 Q72 65 68 67 L68 75 L60 75 L60 70 L55 70 L55 75 L45 75 L45 70 L40 70 L40 75 L32 75 L32 67 Q28 65 28 60 Z" fill="currentColor"/><ellipse cx="40" cy="50" rx="5" ry="6" fill="#1a1a1a"/><ellipse cx="60" cy="50" rx="5" ry="6" fill="#1a1a1a"/><path d="M46 60 L54 60 L50 65 Z" fill="#1a1a1a"/></svg>`,
+    landmark: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M30 50 Q30 30 50 25 Q70 30 70 50 Q70 60 50 60 Q30 60 30 50 Z" fill="currentColor"/><rect x="46" y="55" width="8" height="20" fill="currentColor" opacity="0.7"/><ellipse cx="50" cy="80" rx="22" ry="5" fill="currentColor" opacity="0.3"/></svg>`,
+    paw: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><ellipse cx="50" cy="65" rx="18" ry="14" fill="currentColor"/><ellipse cx="30" cy="35" rx="7" ry="9" fill="currentColor"/><ellipse cx="42" cy="22" rx="6" ry="8" fill="currentColor"/><ellipse cx="58" cy="22" rx="6" ry="8" fill="currentColor"/><ellipse cx="70" cy="35" rx="7" ry="9" fill="currentColor"/></svg>`,
+    dna: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M30 15 Q70 35 30 55 Q70 75 30 95" stroke="currentColor" stroke-width="3" fill="none"/><path d="M70 15 Q30 35 70 55 Q30 75 70 95" stroke="currentColor" stroke-width="3" fill="none"/><line x1="35" y1="25" x2="65" y2="25" stroke="currentColor" stroke-width="2"/><line x1="35" y1="45" x2="65" y2="45" stroke="currentColor" stroke-width="2"/><line x1="35" y1="65" x2="65" y2="65" stroke="currentColor" stroke-width="2"/><line x1="35" y1="85" x2="65" y2="85" stroke="currentColor" stroke-width="2"/></svg>`,
+    heart: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M50 80 Q15 55 25 35 Q35 20 50 35 Q65 20 75 35 Q85 55 50 80 Z" fill="currentColor"/></svg>`,
+    swords: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><line x1="20" y1="20" x2="75" y2="75" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><line x1="80" y1="20" x2="25" y2="75" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><circle cx="20" cy="20" r="6" fill="currentColor"/><circle cx="80" cy="20" r="6" fill="currentColor"/></svg>`,
+    sparkle: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M50 15 L55 45 L85 50 L55 55 L50 85 L45 55 L15 50 L45 45 Z" fill="currentColor"/></svg>`,
+    book: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="20" y="20" width="60" height="65" rx="3" fill="currentColor"/><rect x="22" y="22" width="56" height="61" fill="rgba(255,255,255,0.12)"/><line x1="50" y1="25" x2="50" y2="80" stroke="currentColor" stroke-width="1.5" opacity="0.5"/><line x1="30" y1="35" x2="45" y2="35" stroke="rgba(0,0,0,0.5)" stroke-width="1.2"/><line x1="30" y1="45" x2="45" y2="45" stroke="rgba(0,0,0,0.5)" stroke-width="1.2"/><line x1="55" y1="35" x2="70" y2="35" stroke="rgba(0,0,0,0.5)" stroke-width="1.2"/><line x1="55" y1="45" x2="70" y2="45" stroke="rgba(0,0,0,0.5)" stroke-width="1.2"/></svg>`
+  };
+
+  // Big sprite (used in detail page infobox)
+  function spriteLarge(kind, type, image, name) {
+    const cls = `sprite ${esc(type || '')} sprite-lg`;
+    if (image) return `<div class="${cls}"><img src="${esc(image)}" alt="${esc(name || '')}"></div>`;
+    const map = { cat: SVG.cat, ability: SVG.orb, item: SVG.pouch, enemy: SVG.skull, location: SVG.landmark };
+    return `<div class="${cls}">${map[kind] || SVG.orb}</div>`;
+  }
+
+  // Medium sprite (used in featured card on home)
+  function spriteMedium(c) {
+    if (c.image) return `<div class="sprite ${esc(c.type)} sprite-md"><img src="${esc(c.image)}" alt="${esc(c.name)}"></div>`;
+    return `<div class="sprite ${esc(c.type)} sprite-md">${SVG.cat}</div>`;
+  }
+
+  // Tiny sprite (used in tables, chips)
+  function spriteMini(c) {
+    if (c.image) return `<span class="sprite-mini ${esc(c.type)}"><img src="${esc(c.image)}" alt=""></span>`;
+    return `<span class="sprite-mini ${esc(c.type)}">${SVG.cat}</span>`;
+  }
+
+  /* -------------------- ad slot --------------------
+     Inert until you fill in your AdSense publisher + slot
+     IDs in index.html and uncomment the <ins> below.
+  ----------------------------------------------------- */
+  function adSlot(format) {
+    const f = format || 'rectangle';
+    return `<aside class="ad-slot ad-${esc(f)}" aria-label="Advertisement"><span class="ad-label">Advertisement</span><!--
+      AdSense slot. To activate: replace data-ad-slot, then uncomment this block.
+      <ins class="adsbygoogle" style="display:block"
+        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+        data-ad-slot="XXXXXXXXXX"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    --></aside>`;
+  }
 
   function lookupCat(id)     { return byId(D.cats, id); }
   function lookupAbility(id) { return byId(D.abilities, id); }
@@ -30,22 +101,6 @@
   function lookupEnemy(id)   { return byId(D.enemies, id); }
   function lookupLocation(id){ return byId(D.locations, id); }
   function lookupStatus(id)  { return byId(D.statuses, id); }
-
-  function nameLink(kind, id) {
-    const map = {
-      cat:      [D.cats,      '#/cats/'],
-      ability:  [D.abilities, '#/abilities/'],
-      item:     [D.items,     '#/items/'],
-      enemy:    [D.enemies,   '#/enemies/'],
-      location: [D.locations, '#/locations/'],
-      status:   [D.statuses,  '#/status']
-    };
-    const [arr, base] = map[kind] || [[], '#/'];
-    const obj = byId(arr, id);
-    if (!obj) return esc(id);
-    if (kind === 'status') return link('#/status', obj.name, 'class="row-link"');
-    return link(base + id, obj.name, 'class="row-link"');
-  }
 
   /* -------------------- left nav -------------------- */
   function renderLeftNav(activeRoute) {
@@ -76,12 +131,11 @@
         <li><a href="#/strategies" data-r="/strategies">Strategies</a></li>
         <li><a href="#/patches" data-r="/patches">Patch Notes</a></li>
       </ul>
+      ${adSlot('half-page')}
     `;
     leftNav.querySelectorAll('a').forEach((a) => {
       const r = a.getAttribute('data-r');
-      if (activeRoute === r || activeRoute.startsWith(r + '/') && r !== '/') {
-        a.classList.add('active');
-      }
+      if (activeRoute === r || (activeRoute.startsWith(r + '/') && r !== '/')) a.classList.add('active');
       if (r === '/' && activeRoute === '/') a.classList.add('active');
     });
   }
@@ -115,9 +169,11 @@
         <li><a href="#/enemies">Bestiary</a></li>
         <li><a href="#/strategies">Strategies</a></li>
       </ul>
+      ${adSlot('rectangle')}
       ${extra}
       <h3>Did you know?</h3>
       <p class="qd">Recessive genes only express when both alleles are lowercase. Want a rare trait? Inbreed carefully.</p>
+      ${adSlot('rectangle')}
       <h3>Contribute</h3>
       <p class="qd">Found wrong info? Edit <code>js/data.js</code> in the GitHub repo and open a PR.</p>
     `;
@@ -126,10 +182,7 @@
   /* ============================================================
      ROUTER
      ============================================================ */
-  function parseRoute() {
-    const h = location.hash.replace(/^#/, '') || '/';
-    return h;
-  }
+  function parseRoute() { return location.hash.replace(/^#/, '') || '/'; }
 
   function navigate() {
     const route = parseRoute();
@@ -166,6 +219,7 @@
      ============================================================ */
   function renderHome() {
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="hero">
         <h1>Welcome to the Mewgenics Wiki</h1>
         <p>Your unofficial community guide to the turn-based tactics + cat-breeding roguelite. Browse mechanics, hunt down rare genes, and plan your next litter of murder-cats.</p>
@@ -178,16 +232,18 @@
 
       <h3>Jump in</h3>
       <div class="cards">
-        <a class="card" href="#/getting-started"><div class="icon">🐾</div><h4>Getting Started</h4><p>Your first run, in plain English.</p></a>
-        <a class="card" href="#/cats"><div class="icon">🐱</div><h4>Cats Database</h4><p>${D.cats.length} entries with stats and abilities.</p></a>
-        <a class="card" href="#/genetics"><div class="icon">🧬</div><h4>Genetics</h4><p>How genes pass, mutate, and stack.</p></a>
-        <a class="card" href="#/breeding"><div class="icon">💕</div><h4>Breeding</h4><p>Pairings, litters, and inheritance.</p></a>
-        <a class="card" href="#/combat"><div class="icon">⚔️</div><h4>Combat</h4><p>AP, positioning, status, matchups.</p></a>
-        <a class="card" href="#/abilities"><div class="icon">✨</div><h4>Abilities</h4><p>${D.abilities.length} attacks &amp; spells.</p></a>
-        <a class="card" href="#/items"><div class="icon">🎁</div><h4>Items</h4><p>${D.items.length} pieces of gear &amp; treats.</p></a>
-        <a class="card" href="#/enemies"><div class="icon">👹</div><h4>Bestiary</h4><p>${D.enemies.length} enemies &amp; their tactics.</p></a>
-        <a class="card" href="#/strategies"><div class="icon">📘</div><h4>Strategies</h4><p>Builds &amp; comp ideas.</p></a>
+        <a class="card" href="#/getting-started"><div class="icon">${SVG.paw}</div><h4>Getting Started</h4><p>Your first run, in plain English.</p></a>
+        <a class="card" href="#/cats"><div class="icon">${SVG.cat}</div><h4>Cats Database</h4><p>${D.cats.length} entries with stats and abilities.</p></a>
+        <a class="card" href="#/genetics"><div class="icon">${SVG.dna}</div><h4>Genetics</h4><p>How genes pass, mutate, and stack.</p></a>
+        <a class="card" href="#/breeding"><div class="icon">${SVG.heart}</div><h4>Breeding</h4><p>Pairings, litters, and inheritance.</p></a>
+        <a class="card" href="#/combat"><div class="icon">${SVG.swords}</div><h4>Combat</h4><p>AP, positioning, status, matchups.</p></a>
+        <a class="card" href="#/abilities"><div class="icon">${SVG.sparkle}</div><h4>Abilities</h4><p>${D.abilities.length} attacks &amp; spells.</p></a>
+        <a class="card" href="#/items"><div class="icon">${SVG.pouch}</div><h4>Items</h4><p>${D.items.length} pieces of gear &amp; treats.</p></a>
+        <a class="card" href="#/enemies"><div class="icon">${SVG.skull}</div><h4>Bestiary</h4><p>${D.enemies.length} enemies &amp; their tactics.</p></a>
+        <a class="card" href="#/strategies"><div class="icon">${SVG.book}</div><h4>Strategies</h4><p>Builds &amp; comp ideas.</p></a>
       </div>
+
+      ${adSlot('in-article')}
 
       <div class="page">
         <h2>Featured</h2>
@@ -208,8 +264,8 @@
     if (!c) return '';
     return `
       <a class="card" href="#/cats/${esc(c.id)}" style="display:flex;gap:14px;align-items:center;">
-        <div style="font-size:40px;">${esc(c.emoji)}</div>
-        <div>
+        ${spriteMedium(c)}
+        <div style="flex:1;min-width:0;">
           <h4>${esc(c.name)} ${tag(c.rarity, c.rarity)}</h4>
           <p>${esc(c.lore)}</p>
         </div>
@@ -224,11 +280,13 @@
     const p = D.pages[slug];
     if (!p) return render404(slug);
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>${esc(p.title)}</h1>
         <div class="breadcrumb">Home / ${esc(p.title)}</div>
         ${p.body}
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -240,6 +298,7 @@
     const state = loadState(stateKey, { type: 'all', rarity: 'all', search: '', sort: 'name', dir: 'asc' });
 
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>Cats</h1>
         <div class="breadcrumb">Home / Cats</div>
@@ -274,6 +333,7 @@
           <tbody id="catsBody"></tbody>
         </table>
       </div>
+      ${adSlot('in-article')}
     `;
 
     function applyAndRender() {
@@ -308,7 +368,7 @@
         ? `<tr><td colspan="8"><div class="empty-result">No cats match those filters.</div></td></tr>`
         : rows.map(c => `
           <tr>
-            <td><a href="#/cats/${esc(c.id)}" class="row-link">${esc(c.emoji)} ${esc(c.name)}</a></td>
+            <td><a href="#/cats/${esc(c.id)}" class="row-link">${spriteMini(c)} ${esc(c.name)}</a></td>
             <td>${tag(c.type, c.type)}</td>
             <td>${tag(c.rarity, c.rarity)}</td>
             <td class="num">${c.hp}</td>
@@ -320,10 +380,8 @@
         `).join('');
 
       $('#resultCount').textContent = `${rows.length} of ${D.cats.length}`;
-      // active button states
       document.querySelectorAll('#catsToolbar [data-f="type"]').forEach(b => b.classList.toggle('active', b.dataset.v === state.type));
       document.querySelectorAll('#catsToolbar [data-f="rarity"]').forEach(b => b.classList.toggle('active', b.dataset.v === state.rarity));
-      // sort indicator
       document.querySelectorAll('th.sortable').forEach(th => {
         th.classList.toggle('sorted', th.dataset.sort === state.sort);
         const arr = th.querySelector('.sort-arrow');
@@ -331,7 +389,6 @@
       });
     }
 
-    // wire events
     document.querySelectorAll('#catsToolbar [data-f="type"]').forEach(b => {
       b.onclick = () => { state.type = b.dataset.v; applyAndRender(); };
     });
@@ -367,6 +424,7 @@
       </div>`;
 
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <div class="breadcrumb"><a href="#/cats">Cats</a> / ${esc(c.name)}</div>
         <div class="detail-grid">
@@ -397,7 +455,7 @@
             <p>${esc(c.role)}</p>
           </div>
           <div class="infobox">
-            <div class="sprite ${esc(c.type)}">${esc(c.emoji)}</div>
+            ${spriteLarge('cat', c.type, c.image, c.name)}
             <h4>${esc(c.name)}</h4>
             <dl>
               <dt>Type</dt><dd>${tag(c.type, c.type)}</dd>
@@ -411,6 +469,7 @@
           </div>
         </div>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -422,6 +481,7 @@
     const state = loadState(stateKey, { type: 'all', search: '', sort: 'name', dir: 'asc' });
 
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>Abilities</h1>
         <div class="breadcrumb">Home / Abilities</div>
@@ -448,6 +508,7 @@
           <tbody id="abilBody"></tbody>
         </table>
       </div>
+      ${adSlot('in-article')}
     `;
 
     function applyAndRender() {
@@ -508,6 +569,7 @@
     if (!a) return render404(id);
     const usedBy = D.cats.filter(c => (c.abilities || []).includes(id));
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <div class="breadcrumb"><a href="#/abilities">Abilities</a> / ${esc(a.name)}</div>
         <div class="detail-grid">
@@ -517,7 +579,7 @@
             ${a.tip ? `<div class="callout tip"><strong>Tip:</strong> ${esc(a.tip)}</div>` : ''}
             <h3>Used by</h3>
             <div class="chip-list">
-              ${usedBy.length ? usedBy.map(c => `<a class="chip" href="#/cats/${esc(c.id)}">${esc(c.emoji)} ${esc(c.name)}</a>`).join('')
+              ${usedBy.length ? usedBy.map(c => `<a class="chip" href="#/cats/${esc(c.id)}">${spriteMini(c)} ${esc(c.name)}</a>`).join('')
                               : '<span class="qd">No cats start with this ability.</span>'}
             </div>
             <h3>Applied effects</h3>
@@ -531,7 +593,7 @@
             </div>
           </div>
           <div class="infobox">
-            <div class="sprite ${esc(a.type)}">✨</div>
+            ${spriteLarge('ability', a.type, a.image, a.name)}
             <h4>${esc(a.name)}</h4>
             <dl>
               <dt>Type</dt><dd>${tag(a.type, a.type)}</dd>
@@ -543,6 +605,7 @@
           </div>
         </div>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -556,6 +619,7 @@
     const slots = ['all', ...new Set(D.items.map(i => i.slot))];
 
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>Items</h1>
         <div class="breadcrumb">Home / Items</div>
@@ -584,6 +648,7 @@
           <tbody id="itemsBody"></tbody>
         </table>
       </div>
+      ${adSlot('in-article')}
     `;
 
     function applyAndRender() {
@@ -643,6 +708,7 @@
     const i = lookupItem(id);
     if (!i) return render404(id);
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <div class="breadcrumb"><a href="#/items">Items</a> / ${esc(i.name)}</div>
         <div class="detail-grid">
@@ -655,7 +721,7 @@
             <p>${esc(i.drop || 'Unknown')}</p>
           </div>
           <div class="infobox">
-            <div class="sprite">🎁</div>
+            ${spriteLarge('item', i.rarity, i.image, i.name)}
             <h4>${esc(i.name)}</h4>
             <dl>
               <dt>Slot</dt><dd>${tag(i.slot)}</dd>
@@ -665,6 +731,7 @@
           </div>
         </div>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -673,6 +740,7 @@
      ============================================================ */
   function renderEnemiesList() {
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>Bestiary</h1>
         <div class="breadcrumb">Home / Enemies</div>
@@ -698,6 +766,7 @@
           </tbody>
         </table>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -705,6 +774,7 @@
     const e = lookupEnemy(id);
     if (!e) return render404(id);
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <div class="breadcrumb"><a href="#/enemies">Enemies</a> / ${esc(e.name)}</div>
         <div class="detail-grid">
@@ -724,7 +794,7 @@
             </div>
           </div>
           <div class="infobox">
-            <div class="sprite ${esc(e.type)}">👹</div>
+            ${spriteLarge('enemy', e.type, e.image, e.name)}
             <h4>${esc(e.name)}</h4>
             <dl>
               <dt>Type</dt><dd>${tag(e.type, e.type)}</dd>
@@ -735,6 +805,7 @@
           </div>
         </div>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -743,6 +814,7 @@
      ============================================================ */
   function renderLocationsList() {
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>Locations</h1>
         <div class="breadcrumb">Home / Locations</div>
@@ -756,6 +828,7 @@
           `).join('')}
         </div>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -763,6 +836,7 @@
     const l = lookupLocation(id);
     if (!l) return render404(id);
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <div class="breadcrumb"><a href="#/locations">Locations</a> / ${esc(l.name)}</div>
         <h1>${esc(l.name)} ${tag(l.tier)}</h1>
@@ -778,6 +852,7 @@
         <h3>Notable drops</h3>
         <ul>${(l.drops || []).map(d => `<li>${esc(d)}</li>`).join('')}</ul>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -786,6 +861,7 @@
      ============================================================ */
   function renderStatusList() {
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>Status Effects</h1>
         <div class="breadcrumb">Home / Status Effects</div>
@@ -807,11 +883,13 @@
           </tbody>
         </table>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
   function renderGenesList() {
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>Gene Index</h1>
         <div class="breadcrumb">Home / Genes</div>
@@ -832,11 +910,13 @@
           </tbody>
         </table>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
   function renderStrategiesList() {
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>Strategies &amp; Builds</h1>
         <div class="breadcrumb">Home / Strategies</div>
@@ -851,6 +931,7 @@
           `).join('')}
         </div>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -858,6 +939,7 @@
     const s = (D.strategies || []).find(x => x.id === id);
     if (!s) return render404(id);
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <div class="breadcrumb"><a href="#/strategies">Strategies</a> / ${esc(s.title)}</div>
         <h1>${esc(s.title)}</h1>
@@ -865,15 +947,17 @@
         <p><strong>${esc(s.summary)}</strong></p>
         <p>${esc(s.body)}</p>
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
   function renderPatches() {
     main.innerHTML = `
+      ${adSlot('banner')}
       <div class="page">
         <h1>Patch Notes</h1>
         <div class="breadcrumb">Home / Patch Notes</div>
-        <p style="color:var(--muted);font-size:13px;">Most recent first. Sourced from official dev posts.</p>
+        <p style="color:var(--muted);font-size:13px;">Most recent first.</p>
         ${D.patches.map(p => `
           <div class="patch">
             <div class="patch-meta"><span class="ver">${esc(p.version)}</span><span>${esc(p.date)}</span></div>
@@ -881,6 +965,7 @@
           </div>
         `).join('')}
       </div>
+      ${adSlot('in-article')}
     `;
   }
 
@@ -939,7 +1024,6 @@
     }, 50);
   });
 
-  // Keyboard: / focuses search
   document.addEventListener('keydown', (e) => {
     if (e.key === '/' && document.activeElement !== searchInput) {
       e.preventDefault();
@@ -951,12 +1035,8 @@
     }
   });
 
-  /* -------------------- mobile menu -------------------- */
-  if (menuToggle) {
-    menuToggle.onclick = () => leftNav.classList.toggle('open');
-  }
+  if (menuToggle) menuToggle.onclick = () => leftNav.classList.toggle('open');
 
-  /* -------------------- localStorage helpers -------------------- */
   function loadState(key, defaults) {
     try {
       const raw = localStorage.getItem('mw:' + key);
@@ -968,7 +1048,6 @@
     try { localStorage.setItem('mw:' + key, JSON.stringify(state)); } catch (e) {}
   }
 
-  /* -------------------- boot -------------------- */
   window.addEventListener('hashchange', () => {
     leftNav.classList.remove('open');
     navigate();
