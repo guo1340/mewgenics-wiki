@@ -84,15 +84,16 @@
   ----------------------------------------------------- */
   function adSlot(format) {
     const f = format || 'rectangle';
+    const isBanner = f === 'banner';
 
     return `
       <aside class="ad-slot ad-${esc(f)}" aria-label="Advertisement">
         <span class="ad-label">Advertisement</span>
         <ins class="adsbygoogle"
-          style="display:block"
+          style="display:block;${isBanner ? 'width:100%;height:100px;' : ''}"
           data-ad-client="ca-pub-1319817671788428"
           data-ad-slot="YOUR_REAL_SLOT_ID"
-          data-ad-format="${f === 'rectangle' ? 'rectangle' : 'auto'}"
+          ${isBanner ? '' : 'data-ad-format="auto"'}
           data-full-width-responsive="false"></ins>
       </aside>
     `;
