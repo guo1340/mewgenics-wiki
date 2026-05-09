@@ -100,7 +100,7 @@
         <ins class="adsbygoogle"
           style="display:block;${styleSize}"
           data-ad-client="ca-pub-1319817671788428"
-          data-ad-slot="YOUR_REAL_SLOT_ID"
+          data-ad-slot="6141169453"
           data-full-width-responsive="false"></ins>
       </aside>
     `;
