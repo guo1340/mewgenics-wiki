@@ -878,37 +878,34 @@ table.data .row-link {
   width: 100%;
 }
 
+/* Ad slots */
 .ad-banner {
-  height: 100px;
-  max-height: 100px;
-  min-height: 100px;
+  min-height: 90px;
+  max-height: 90px;
   overflow: hidden;
 }
 
 .ad-banner .adsbygoogle {
   display: block !important;
   width: 100% !important;
-  height: 100px !important;
-  max-height: 100px !important;
+  height: 90px !important;
 }
 
 .ad-rectangle {
-  height: 280px;
-  max-height: 280px;
-  min-height: 280px;
+  min-height: 250px;
+  max-height: 250px;
   overflow: hidden;
 }
 
 .ad-rectangle .adsbygoogle {
   display: block !important;
   width: 100% !important;
-  height: 280px !important;
+  height: 250px !important;
 }
 
 .ad-half-page {
-  height: 600px;
-  max-height: 600px;
   min-height: 600px;
+  max-height: 600px;
   overflow: hidden;
   margin-top: 18px;
 }
@@ -920,16 +917,42 @@ table.data .row-link {
 }
 
 .ad-in-article {
-  height: 300px;
-  max-height: 300px;
-  min-height: 300px;
+  min-height: 280px;
+  max-height: 280px;
   overflow: hidden;
 }
 
 .ad-in-article .adsbygoogle {
   display: block !important;
   width: 100% !important;
-  height: 300px !important;
+  height: 280px !important;
+}
+
+/* Mobile: reduce ad height so it does not dominate the screen */
+@media (max-width: 720px) {
+  .ad-banner {
+    min-height: 80px;
+    max-height: 80px;
+  }
+
+  .ad-banner .adsbygoogle {
+    height: 80px !important;
+  }
+
+  .ad-rectangle,
+  .ad-in-article {
+    min-height: 250px;
+    max-height: 250px;
+  }
+
+  .ad-rectangle .adsbygoogle,
+  .ad-in-article .adsbygoogle {
+    height: 250px !important;
+  }
+
+  .ad-half-page {
+    display: none;
+  }
 }
 
 /* quieter sidebar */
