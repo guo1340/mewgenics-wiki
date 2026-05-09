@@ -18,7 +18,7 @@ mewgenics-wiki/
 
 ## Features
 
-- **Hash-based SPA routing** — `#/cats`, `#/cats/sir-whiskers`, etc. No server config needed.
+- **Hash-based SPA routing** — `/cats`, `/cats/sir-whiskers`, etc. No server config needed.
 - **Global search** with `/` keyboard shortcut.
 - **Filterable + sortable tables** for cats, abilities, and items.
 - **Cross-linking** — abilities link to the cats that use them, enemies link to their biomes, and so on.
@@ -103,6 +103,7 @@ Then visit `http://localhost:8000`.
 ## Deploying to Cloudflare Pages (via GitHub)
 
 1. **Create a GitHub repo** and push these files:
+
    ```bash
    cd mewgenics-wiki
    git init
@@ -119,9 +120,9 @@ Then visit `http://localhost:8000`.
 
 3. **Build settings** (this is where it's easy to overthink — there's nothing to build):
    - Framework preset: **None**
-   - Build command: *(leave empty)*
+   - Build command: _(leave empty)_
    - Build output directory: `/`
-   - Root directory: *(leave empty unless you nested the wiki inside a subfolder)*
+   - Root directory: _(leave empty unless you nested the wiki inside a subfolder)_
 
 4. **Deploy**. You'll get a URL like `mewgenics-wiki.pages.dev`. Every push to `main` redeploys automatically.
 
@@ -159,9 +160,9 @@ automatically — no code changes required.
 
 This version includes these hash-routed pages:
 
-- `#/about`
-- `#/privacy-policy`
-- `#/contact`
+- `/about`
+- `/privacy-policy`
+- `/contact`
 
 Before applying for AdSense, update the placeholder contact email on the Contact page in `js/app.js`, then make sure these pages are linked in the footer and reachable from the deployed site.
 
@@ -193,13 +194,13 @@ layout without actually serving ads.
 
 The static-only design has hard ceilings. When you hit them, here's where to go:
 
-| You want to… | Add this |
-| --- | --- |
-| Let users edit pages | Switch to Astro/Hugo + GitHub PRs, or migrate to MediaWiki |
-| Comments on pages | Giscus (GitHub Discussions) — still no backend |
-| User accounts / favorites | Cloudflare Workers + KV or D1 (free tier) |
-| Better search | Add Lunr.js or Pagefind for fuzzy + typo-tolerant search |
-| Multilingual | Split `data.js` into `data.en.js`, `data.ja.js` etc. and switch on a UI toggle |
+| You want to…              | Add this                                                                       |
+| ------------------------- | ------------------------------------------------------------------------------ |
+| Let users edit pages      | Switch to Astro/Hugo + GitHub PRs, or migrate to MediaWiki                     |
+| Comments on pages         | Giscus (GitHub Discussions) — still no backend                                 |
+| User accounts / favorites | Cloudflare Workers + KV or D1 (free tier)                                      |
+| Better search             | Add Lunr.js or Pagefind for fuzzy + typo-tolerant search                       |
+| Multilingual              | Split `data.js` into `data.en.js`, `data.ja.js` etc. and switch on a UI toggle |
 
 ## License
 

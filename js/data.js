@@ -746,7 +746,7 @@ window.WikiData = {
       title: 'Genetics',
       body: `
         <p>Cats inherit gene pairs from their parents. Capital letters are dominant, lowercase recessive. Stack the right pair and you get rare expressions — sometimes desirable, sometimes catastrophic.</p>
-        <p>Each kitten rolls one allele from each parent for every gene slot, with a small chance of mutation. See <a href="#/breeding">Breeding</a> for full mechanics.</p>
+        <p>Each kitten rolls one allele from each parent for every gene slot, with a small chance of mutation. See <a href="/breeding">Breeding</a> for full mechanics.</p>
         <h3>Reading a genotype</h3>
         <p>A cat with genes <code>FF Ll Tt</code> is homozygous dominant for Fire affinity, heterozygous for Long-hair, and heterozygous for Tabby. Homozygous dominant always expresses the strongest version of the trait.</p>
         <div class="callout tip">Recessive expressions only show when both alleles are lowercase. Want a rare trait? Inbreed carefully — at the cost of mutation risk.</div>
@@ -792,7 +792,7 @@ window.WikiData = {
         <h3>AP costs</h3>
         <ul>
           <li>Move: 1 AP per tile (varies with terrain).</li>
-          <li>Abilities: see ability cost on <a href="#/abilities">Abilities</a>.</li>
+          <li>Abilities: see ability cost on <a href="/abilities">Abilities</a>.</li>
           <li>Default AP per turn: 4 (modified by speed and items).</li>
         </ul>
       `
