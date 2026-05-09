@@ -91,9 +91,9 @@
         <ins class="adsbygoogle"
           style="display:block"
           data-ad-client="ca-pub-1319817671788428"
-          data-ad-slot="PASTE_YOUR_AD_SLOT_ID_HERE"
-          data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
+          data-ad-slot="YOUR_REAL_SLOT_ID"
+          data-ad-format="${f === 'rectangle' ? 'rectangle' : 'auto'}"
+          data-full-width-responsive="false"></ins>
       </aside>
     `;
   }
@@ -219,9 +219,9 @@
     else if (route === '/genes') renderGenesList();
     else if (route === '/strategies') renderStrategiesList();
     else if (route === '/patches') renderPatches();
-    else if (route === '/about') renderAbout();
-    else if (route === '/privacy') renderPrivacyPolicy();
-    else if (route === '/contact') renderContact();
+    else if (route === '/about') renderInfoPage('about');
+    else if (route === '/privacy-policy') renderInfoPage('privacy-policy');
+    else if (route === '/contact') renderInfoPage('contact');
     else if (route.startsWith('/cats/')) renderCatDetail(route.slice(6));
     else if (route.startsWith('/abilities/')) renderAbilityDetail(route.slice(11));
     else if (route.startsWith('/items/')) renderItemDetail(route.slice(7));
