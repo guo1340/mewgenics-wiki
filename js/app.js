@@ -183,19 +183,12 @@
         <li><a href="/enemies">Bestiary</a></li>
         <li><a href="/strategies">Strategies</a></li>
       </ul>
-      ${adSlot('rectangle')}
       ${extra}
       <h3>Did you know?</h3>
       <p class="qd">Breeding power comes from stat inheritance, skill inheritance, mutations, and disorder control — not just one lucky cat.</p>
-      ${adSlot('rectangle')}
-      <h3>Site Info</h3>
-      <ul>
-        <li><a href="/about">About this wiki</a></li>
-        <li><a href="/privacy-policy">Privacy Policy</a></li>
-        <li><a href="/contact">Contact</a></li>
-      </ul>
       <h3>Contribute</h3>
       <p class="qd">Found wrong info? Edit <code>js/data.js</code> in the GitHub repo and open a PR.</p>
+      ${adSlot('rectangle')}
     `;
   }
 
