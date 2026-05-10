@@ -231,38 +231,37 @@
     renderLeftNav(route);
     renderRightNav(route);
 
-    if (route === '/' || route === '') return renderHome();
-    if (route === '/getting-started') return renderStaticPage('getting-started');
-    if (route === '/genetics')        return renderStaticPage('genetics');
-    if (route === '/breeding')        return renderStaticPage('breeding');
-    if (route === '/combat')          return renderStaticPage('combat');
-    if (route === '/classes')         return renderClassesList();
-    if (route === '/mutations')       return renderMutationsList();
-    if (route === '/biomes')          return renderBiomesList();
-    if (route === '/cats')            return renderCatsList();
-    if (route === '/abilities')       return renderAbilitiesList();
-    if (route === '/items')           return renderItemsList();
-    if (route === '/enemies')         return renderEnemiesList();
-    if (route === '/locations')       return renderLocationsList();
-    if (route === '/status')          return renderStatusList();
-    if (route === '/genes')           return renderGenesList();
-    if (route === '/strategies')      return renderStrategiesList();
-    if (route === '/patches')         return renderPatches();
-    if (route === '/about')           return renderInfoPage('about');
-    if (route === '/privacy-policy')  return renderInfoPage('privacy-policy');
-    if (route === '/contact')         return renderInfoPage('contact');
+    if (route === '/' || route === '') renderHome();
+    else if (route === '/getting-started') renderStaticPage('getting-started');
+    else if (route === '/genetics') renderStaticPage('genetics');
+    else if (route === '/breeding') renderStaticPage('breeding');
+    else if (route === '/combat') renderStaticPage('combat');
+    else if (route === '/classes') renderClassesList();
+    else if (route === '/mutations') renderMutationsList();
+    else if (route === '/biomes') renderBiomesList();
+    else if (route === '/cats') renderCatsList();
+    else if (route === '/abilities') renderAbilitiesList();
+    else if (route === '/items') renderItemsList();
+    else if (route === '/enemies') renderEnemiesList();
+    else if (route === '/locations') renderLocationsList();
+    else if (route === '/status') renderStatusList();
+    else if (route === '/genes') renderGenesList();
+    else if (route === '/strategies') renderStrategiesList();
+    else if (route === '/patches') renderPatches();
+    else if (route === '/about') renderInfoPage('about');
+    else if (route === '/privacy-policy') renderInfoPage('privacy-policy');
+    else if (route === '/contact') renderInfoPage('contact');
+    else if (route.startsWith('/cats/')) renderCatDetail(route.slice(6));
+    else if (route.startsWith('/abilities/')) renderAbilityDetail(route.slice(11));
+    else if (route.startsWith('/items/')) renderItemDetail(route.slice(7));
+    else if (route.startsWith('/enemies/')) renderEnemyDetail(route.slice(9));
+    else if (route.startsWith('/locations/')) renderLocationDetail(route.slice(11));
+    else if (route.startsWith('/classes/')) renderClassDetail(route.slice(9));
+    else if (route.startsWith('/mutations/')) renderMutationDetail(route.slice(11));
+    else if (route.startsWith('/biomes/')) renderBiomeDetail(route.slice(8));
+    else if (route.startsWith('/strategies/')) renderStrategyDetail(route.slice(12));
+    else render404(route);
 
-    if (route.startsWith('/cats/'))      return renderCatDetail(route.slice(6));
-    if (route.startsWith('/abilities/')) return renderAbilityDetail(route.slice(11));
-    if (route.startsWith('/items/'))     return renderItemDetail(route.slice(7));
-    if (route.startsWith('/enemies/'))   return renderEnemyDetail(route.slice(9));
-    if (route.startsWith('/locations/')) return renderLocationDetail(route.slice(11));
-    if (route.startsWith('/classes/'))   return renderClassDetail(route.slice(9));
-    if (route.startsWith('/mutations/')) return renderMutationDetail(route.slice(11));
-    if (route.startsWith('/biomes/'))    return renderBiomeDetail(route.slice(8));
-    if (route.startsWith('/strategies/'))return renderStrategyDetail(route.slice(12));
-
-    render404(route);
     setTimeout(loadAds, 100);
   }
 
