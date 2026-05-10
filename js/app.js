@@ -88,7 +88,7 @@
       AdSense slot. To activate: replace data-ad-slot, then uncomment this block.
       <ins class="adsbygoogle" style="display:block"
         data-ad-client="ca-pub-1319817671788428"
-        data-ad-slot="XXXXXXXXXX"
+        data-ad-slot="6141169453"
         data-ad-format="auto"
         data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
