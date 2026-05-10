@@ -209,3 +209,27 @@ The static-only design has hard ceilings. When you hit them, here's where to go:
 All content in this repository — including the wiki text, structure, code, and
 data files — is reserved by the site owner. Do not redistribute without
 permission.
+
+## For Owner
+
+If you want to check if the ads are running correctly, paste this in console
+
+```bash
+document.querySelectorAll('.adsbygoogle').forEach(x =>
+  console.log(x.getAttribute('data-adsbygoogle-status'), x.getAttribute('data-ad-status'))
+)
+```
+
+if it respond with
+
+```bash
+done unfilled
+```
+
+then that means it is running on the website correctly but Google is simply not giving you ads
+
+when the ads are running and showing correctly, it should be showing
+
+```bash
+done filled
+```
