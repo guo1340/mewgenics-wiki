@@ -5,9 +5,9 @@
    just append a new object to the relevant array. Cross-links
    work via the `id` field — ids must match between objects.
 
-   NOTE: Stats, names, and lore below are PLACEHOLDER content
-   structured to match what a real wiki of this game would
-   need. Replace with verified data as the game releases.
+   Research-first wiki content. Entries marked as strategic notes
+   summarize public gameplay information and community guide patterns;
+   exact values should be updated as patches and datamining improve.
    ============================================================ */
 
 window.WikiData = {
@@ -719,83 +719,168 @@ window.WikiData = {
   ],
 
   /* ---------------------------------------------------------- */
+  /*                         CLASSES                            */
+  /* ---------------------------------------------------------- */
+  classes: [
+    { id: 'fighter', name: 'Fighter', role: 'Frontline damage', difficulty: 'Beginner', coreStats: ['Strength', 'Health'], summary: 'Reliable melee class for early runs. Fighters want survivability, knockback tools, and simple high-value attacks.', tips: ['Use Fighters to learn positioning and enemy targeting.', 'Pair with Tank or Druid support when pushing unfamiliar routes.', 'Prioritize mutations that add damage without crippling health.'] },
+    { id: 'tank', name: 'Tank', role: 'Frontline control', difficulty: 'Beginner', coreStats: ['Health', 'Defense'], summary: 'Slow, durable class that protects fragile cats and forces enemies into bad positions.', tips: ['Body-block chokepoints and use shove/taunt effects to control lanes.', 'High HP matters because injuries can create long-term bloodline problems.', 'Tank bloodlines benefit from defensive mutations and low-risk disorders.'] },
+    { id: 'hunter', name: 'Hunter', role: 'Ranged physical damage', difficulty: 'Intermediate', coreStats: ['Dexterity', 'Speed'], summary: 'Ranged class that rewards line-of-sight planning, high ground, and safe target priority.', tips: ['Remove ranged enemies first before they stack status effects.', 'Long-tail and range-oriented traits are valuable.', 'Hunters are good carriers for utility passives because they can stay safe.'] },
+    { id: 'mage', name: 'Mage', role: 'Elemental burst and utility', difficulty: 'Intermediate', coreStats: ['Intelligence', 'Mana'], summary: 'Spell-focused class with huge upside when paired with inherited skills, mana support, and status combos.', tips: ['Wet into lightning/ice-style interactions and fire into clustered enemies are common tactical patterns.', 'Protect Mages from early injuries; they often snowball later.', 'Forbidden or reroll-style spell mutations can define a bloodline.'] },
+    { id: 'thief', name: 'Thief', role: 'Mobility and loot pressure', difficulty: 'Advanced', coreStats: ['Speed', 'Luck'], summary: 'Fast utility class that benefits from first-turn tempo, crits, and item economy.', tips: ['Speed lets Thieves finish fragile threats before they act.', 'Do not overinvest in damage at the cost of survival.', 'Great candidate for first-turn or extra-action mutations.'] },
+    { id: 'druid', name: 'Druid', role: 'Summons, buffs, and sustain', difficulty: 'Advanced', coreStats: ['Intelligence', 'Health'], summary: 'Support class that can stabilize dangerous fights through summons, healing-style effects, and long-form value.', tips: ['Strong in longer maps where attrition matters.', 'Self-buffs plus risky link-style mutations can backfire if copied onto enemies.', 'Keep one Druid line as a utility breeder if you find rare support passives.'] }
+  ],
+
+  /* ---------------------------------------------------------- */
+  /*                        MUTATIONS                           */
+  /* ---------------------------------------------------------- */
+  mutations: [
+    { id: 'extra-paw', name: 'Extra Paw', part: 'Arm', polarity: 'positive', effect: 'Can add action economy or utility depending on roll.', notes: 'Extra-action effects are among the strongest mutation outcomes for tempo builds.' },
+    { id: 'ram-horns', name: 'Ram Horns', part: 'Head', polarity: 'mixed', effect: '+physical pressure; may trade away a defensive stat.', notes: 'Best on Fighters/Tanks that already want to collide with enemies.' },
+    { id: 'deer-horns', name: 'Deer Horns', part: 'Head', polarity: 'mixed', effect: 'Usually stat-positive with a visible head mutation.', notes: 'Useful breeding target if the penalty does not hit the cat’s class stat.' },
+    { id: 'rat-tail', name: 'Rat Tail', part: 'Tail', polarity: 'mixed', effect: 'Tail mutation with stat tradeoff and possible utility interactions.', notes: 'Tail slot matters because some tail effects compete with range/carry/knockback style builds.' },
+    { id: 'turtle-tail', name: 'Turtle Tail / Turtle Part', part: 'Tail', polarity: 'defensive', effect: 'Leans defensive; may reduce speed or mobility.', notes: 'Good on slow tanks, bad on fragile speed classes.' },
+    { id: 'thorns', name: 'Thorns', part: 'Body', polarity: 'positive', effect: 'Punishes melee attackers or adds retaliation-style value.', notes: 'Very strong on cats designed to be hit.' },
+    { id: 'exposed-brain', name: 'Exposed Brain', part: 'Head', polarity: 'high-value', effect: 'Community reports describe intelligence scaling after fights.', notes: 'Premium Mage/Druid breeding target if you can manage the downside.' },
+    { id: 'mouth-reroll', name: 'Mouth Skill Reroll', part: 'Mouth', polarity: 'utility', effect: 'Can reroll or manipulate skill outcomes depending on exact mutation.', notes: 'Valuable for bloodline curation because skill inheritance is a major power source.' },
+    { id: 'cursed-item-tail', name: 'Cursed Item Removal Tail', part: 'Tail', polarity: 'utility', effect: 'Can help deal with cursed item problems.', notes: 'Not raw damage, but can save runs and protect rare equipment lines.' },
+    { id: 'one-eye', name: 'Cyclops / One Eye', part: 'Eye', polarity: 'mixed', effect: 'Single-eye mutation with stat and defect interactions.', notes: 'Patch 1.1 changed how one-eye/one-ear/one-eyebrow heads interact with missing-part defects.' }
+  ],
+
+  /* ---------------------------------------------------------- */
+  /*                         BIOMES                             */
+  /* ---------------------------------------------------------- */
+  biomes: [
+    { id: 'alley', name: 'Alley', tier: 'early', hazards: ['basic terrain', 'low enemy density'], plan: 'Best place to stabilize new cats and learn movement/targeting. Prioritize safe kills over greed.' },
+    { id: 'sewer', name: 'Sewer', tier: 'early-mid', hazards: ['water tiles', 'status chains'], plan: 'Expect wet/poison-style interactions. Bring cleanse or ranged damage so you do not fight inside hazards.' },
+    { id: 'graveyard', name: 'Graveyard', tier: 'mid', hazards: ['curse pressure', 'undead enemies'], plan: 'Bring sustain, cleanse, and burst for priority casters. Avoid long fights if your healer gets cursed.' },
+    { id: 'caves', name: 'Caves', tier: 'mid', hazards: ['chokepoints', 'line-of-sight blockers'], plan: 'Tanks and knockback effects shine. Ranged cats need careful positioning.' },
+    { id: 'junkyard', name: 'Junkyard', tier: 'mid-late', hazards: ['metal clutter', 'environmental objects'], plan: 'Use objects and knockback to create damage. Do not let fragile cats get boxed in.' },
+    { id: 'desert', name: 'Desert', tier: 'late', hazards: ['open lanes', 'high punishment for slow cats'], plan: 'Speed and range matter. Enter with a developed bloodline rather than fresh kittens.' },
+    { id: 'crypts', name: 'Crypts', tier: 'late', hazards: ['heavy curses', 'durable enemies'], plan: 'Cleanse and anti-boss damage are mandatory. Preserve rare cats by retreating from doomed fights.' }
+  ],
+
+  /* ---------------------------------------------------------- */
+  /*                       PATCH NOTES                          */
+  /* ---------------------------------------------------------- */
+  patches: [
+    {
+      version: 'Beta Update 1.1',
+      date: '2026-04-29',
+      changes: [
+        'Breeding update: the Mutation home stat no longer rerolls existing mutations or birth defects.',
+        'Mutation stat behavior changed: simple +2/-1 mutations roll first; higher Mutation increases the chance for effect-based mutations.',
+        'One-eye, one-ear, and one-eyebrow heads no longer incorrectly count as missing-part birth defects for the matching slot.',
+        'Voice inheritance chance reduced from 98% to 75%.',
+        'Class and breeding balance changes should be reviewed before following older meta guides.'
+      ]
+    },
+    {
+      version: 'Launch / Early Access baseline',
+      date: '2026-02-10',
+      changes: [
+        'Mewgenics released on Steam for Windows as a tactical roguelike life-sim about breeding and adventuring with cats.',
+        'Core loop: send cats into tactical grid battles, bring survivors home, pass down skills/mutations/quirks, and build stronger bloodlines.',
+        'Official feature count advertises 1000+ abilities, 900+ items, many mutations, and extensive environmental interactions.'
+      ]
+    }
+  ],
+
+  /* ---------------------------------------------------------- */
   /*                        STATIC PAGES                        */
   /* ---------------------------------------------------------- */
   pages: {
     'getting-started': {
       title: 'Getting Started',
       body: `
-        <p>Mewgenics blends turn-based tactical combat with a cat-breeding sim. You'll spend runs gathering treats, fighting on grid-based maps, and bringing surviving cats home to breed the next generation.</p>
-        <h3>The basic loop</h3>
+        <p>Mewgenics is a tactical roguelike life-sim built around two connected halves: turn-based grid combat and long-term cat breeding. A single run matters, but the bloodline matters more.</p>
+        <h3>The core loop</h3>
         <ol>
-          <li>Pick a starting cat from your colony.</li>
-          <li>Take it on a quest — a series of grid-based encounters.</li>
-          <li>Loot treats and equipment along the way.</li>
-          <li>Bring it home. Breed it. Repeat with a stronger litter.</li>
+          <li>Choose a team of cats with classes, stats, skills, equipment, quirks, and mutations.</li>
+          <li>Fight through procedurally generated tactical encounters.</li>
+          <li>Bring survivors home with experience, scars, items, and new breeding value.</li>
+          <li>Breed stronger kittens by passing down stats, skills, mutations, and useful traits.</li>
+          <li>Use furniture and room planning to influence breeding outcomes.</li>
         </ol>
-        <div class="callout">Death is permanent for individual cats — but their genes live on through their offspring. Plan the bloodline, not the cat.</div>
-        <h3>First-run tips</h3>
+        <div class="callout">The important mindset: do not only protect the current run. Protect the future breeding pool.</div>
+        <h3>Early priorities</h3>
         <ul>
-          <li>Don't bring your only fertile cat into a high-tier biome.</li>
-          <li>Always finish the Backyard before risking the Old Forest.</li>
-          <li>Save catnip for boss fights — the random buff can swing the encounter.</li>
+          <li>Keep at least one strong breeder safe at home instead of risking every good cat.</li>
+          <li>Do not ignore disorders, injuries, or bad inherited traits. They can poison later generations.</li>
+          <li>Learn status effects early; many losses come from chain reactions rather than raw enemy damage.</li>
+          <li>Use simple classes first: Fighter, Tank, Hunter, and Mage are easier to understand than advanced synergy builds.</li>
+          <li>Document good parents. A cat with strong stats and useful inherited skills can be more valuable than a single strong fighter.</li>
         </ul>
       `
     },
     'genetics': {
       title: 'Genetics',
       body: `
-        <p>Cats inherit gene pairs from their parents. Capital letters are dominant, lowercase recessive. Stack the right pair and you get rare expressions — sometimes desirable, sometimes catastrophic.</p>
-        <p>Each kitten rolls one allele from each parent for every gene slot, with a small chance of mutation. See <a href="/breeding">Breeding</a> for full mechanics.</p>
-        <h3>Reading a genotype</h3>
-        <p>A cat with genes <code>FF Ll Tt</code> is homozygous dominant for Fire affinity, heterozygous for Long-hair, and heterozygous for Tabby. Homozygous dominant always expresses the strongest version of the trait.</p>
-        <div class="callout tip">Recessive expressions only show when both alleles are lowercase. Want a rare trait? Inbreed carefully — at the cost of mutation risk.</div>
+        <p>Genetics in Mewgenics is about inheritance across generations. Public breeding notes and community testing suggest that kittens inherit stats, spells/skills, passives, disorders, voices, and mutations through multiple layered rolls rather than one simple “copy parent” rule.</p>
+        <h3>What can pass down?</h3>
+        <ul>
+          <li><strong>Stats:</strong> each stat can favor one parent, with stimulation improving the chance of inheriting the better value.</li>
+          <li><strong>Skills/spells:</strong> skill inheritance is one of the biggest reasons to breed deliberately.</li>
+          <li><strong>Mutations:</strong> many mutations are inheritable and can define a bloodline.</li>
+          <li><strong>Disorders and defects:</strong> bad traits can also persist, especially with inbreeding or poor bloodline control.</li>
+          <li><strong>Cosmetic/body traits:</strong> body-part mutations and voices can persist across generations.</li>
+        </ul>
+        <div class="callout tip">Stimulation is useful, but community formula notes suggest it is not magic by itself. Good parents, good rooms, and clean bloodline management still matter.</div>
+        <h3>Practical rule</h3>
+        <p>Breed for a purpose. Decide whether the cat is a combat carry, a breeder, a mutation project, or disposable exploration stock. Keeping every mediocre cat makes the house worse over time.</p>
       `
     },
     'breeding': {
       title: 'Breeding',
       body: `
-        <p>Pair two cats at the breeding bed to produce a litter. Each kitten rolls one allele from each parent for every gene slot, with a small chance of mutation.</p>
-        <h3>Requirements</h3>
-        <ol>
-          <li>Both cats must be adults (not kittens).</li>
-          <li>Different sexes (M + F).</li>
-          <li>Both must be alive at home base — cats lost on quests can't be paired.</li>
-        </ol>
-        <h3>Inheritance</h3>
+        <p>Breeding is the long-term progression system. Surviving cats eventually feed the next generation, and good breeding decisions can matter more than one lucky combat run.</p>
+        <h3>Breeding goals</h3>
         <ul>
-          <li>Each gene slot: 50% chance to inherit from each parent.</li>
-          <li>Mutation chance: ~3% per slot. Mutations can introduce new alleles.</li>
-          <li>Litter size: 1–4 kittens, weighted by parent stats and items.</li>
+          <li><strong>Stat lines:</strong> preserve high values in the stats that matter for the class.</li>
+          <li><strong>Skill inheritance:</strong> pass down rare or build-defining skills and passives.</li>
+          <li><strong>Mutation curation:</strong> keep positive mutations and remove or isolate harmful ones.</li>
+          <li><strong>Disorder control:</strong> do not let severe disorders become normal in the bloodline.</li>
+          <li><strong>Room planning:</strong> furniture and home stats influence outcomes, especially mutation-heavy breeding.</li>
         </ul>
-        <div class="callout warn">Inbreeding (siblings, parent-child) increases mutation rate but also increases the chance of negative traits surfacing.</div>
+        <h3>Community breeding pattern</h3>
+        <ol>
+          <li>Use safe runs to identify cats with strong stats or rare skills.</li>
+          <li>Keep the best parents at home instead of risking them immediately.</li>
+          <li>Create a main breeding room for clean, high-quality lines.</li>
+          <li>Create a mutation/testing room for risky red mutations, disorders, or experimental cats.</li>
+          <li>Only merge a cat back into the main line if it improves the bloodline.</li>
+        </ol>
+        <div class="callout warn">Inbreeding can concentrate good traits, but it also increases the chance of birth defects and inherited problems. Use it deliberately, not randomly.</div>
       `
     },
     'combat': {
       title: 'Combat',
       body: `
-        <p>Combat is turn-based on a square grid. Each cat has Action Points (AP) per turn, spent on movement or abilities. Positioning, status effects, and elemental matchups decide most fights.</p>
-        <h3>Turn order</h3>
-        <p>Order is decided by <strong>Speed</strong>. Ties broken by initiative roll. Status effects tick at the end of each cat's turn.</p>
-        <h3>Damage type matchups</h3>
-        <table class="data">
-          <thead><tr><th>Type</th><th>Strong vs.</th><th>Weak vs.</th><th>Status applied</th></tr></thead>
-          <tbody>
-            <tr><td><span class="tag fire">Fire</span></td><td>Earth</td><td>Water</td><td>Burn</td></tr>
-            <tr><td><span class="tag water">Water</span></td><td>Fire</td><td>Earth</td><td>Soak</td></tr>
-            <tr><td><span class="tag earth">Earth</span></td><td>Water</td><td>Fire</td><td>Root</td></tr>
-            <tr><td><span class="tag dark">Dark</span></td><td>Light</td><td>Light</td><td>Curse</td></tr>
-            <tr><td><span class="tag light">Light</span></td><td>Dark</td><td>Dark</td><td>Cleanse</td></tr>
-            <tr><td><span class="tag air">Air</span></td><td>—</td><td>—</td><td>Knockback</td></tr>
-          </tbody>
-        </table>
-        <h3>AP costs</h3>
+        <p>Combat is turn-based and grid-based. Cats and enemies use movement, active skills, passive effects, terrain, objects, weather, and status effects to create tactical chain reactions.</p>
+        <h3>Combat priorities</h3>
         <ul>
-          <li>Move: 1 AP per tile (varies with terrain).</li>
-          <li>Abilities: see ability cost on <a href="/abilities">Abilities</a>.</li>
-          <li>Default AP per turn: 4 (modified by speed and items).</li>
+          <li><strong>Action economy:</strong> extra turns, first-turn effects, summons, and disables are extremely valuable.</li>
+          <li><strong>Positioning:</strong> chokepoints, line of sight, knockback, and hazards often matter more than raw damage.</li>
+          <li><strong>Status control:</strong> Burn, Wet, Frozen, Bleed, Curse, Charm, Madness, Root, and Stun can swing fights.</li>
+          <li><strong>Protect carries:</strong> injuries can damage the long-term breeding plan, not just the current run.</li>
         </ul>
+        <h3>Beginner combat plan</h3>
+        <ol>
+          <li>Kill enemy status casters and ranged units first.</li>
+          <li>Do not spend all movement walking into unknown threats.</li>
+          <li>Use tanks to block lanes, not to chase enemies across the map.</li>
+          <li>Save burst skills for enemies that are about to act.</li>
+          <li>Retreat mentally before disaster: losing one run can be fine; losing your best bloodline is not.</li>
+        </ol>
       `
     }
-  }
+  },
+
+  /* ---------------------------------------------------------- */
+  /*                         SOURCES                            */
+  /* ---------------------------------------------------------- */
+  sources: [
+    { name: 'Official Steam page', url: 'https://store.steampowered.com/app/686060/Mewgenics/', note: 'Official feature overview and release information.' },
+    { name: 'Mewgenics Wiki.gg', url: 'https://mewgenics.wiki.gg/', note: 'Community wiki reference for mutations, classes, abilities, disorders, and status effects.' },
+    { name: 'Steam Community Guides', url: 'https://steamcommunity.com/app/686060/guides/', note: 'Community strategy, breeding, and getting-started guides.' }
+  ]
 };

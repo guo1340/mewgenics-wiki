@@ -84,37 +84,15 @@
   ----------------------------------------------------- */
   function adSlot(format) {
     const f = format || 'rectangle';
-
-    const sizes = {
-      banner: 'width:100%;height:100px;',
-      rectangle: 'width:100%;height:280px;',
-      'in-article': 'width:100%;height:300px;',
-      'half-page': 'width:100%;height:600px;'
-    };
-
-    const styleSize = sizes[f] || sizes.rectangle;
-
-    return `
-      <aside class="ad-slot ad-${esc(f)}" aria-label="Advertisement">
-        <span class="ad-label">Advertisement</span>
-        <ins class="adsbygoogle"
-          style="display:block;${styleSize}"
-          data-ad-client="ca-pub-1319817671788428"
-          data-ad-slot="6141169453"
-          data-full-width-responsive="false"></ins>
-      </aside>
-    `;
-  }
-  function loadAds() {
-    setTimeout(() => {
-      document.querySelectorAll('.adsbygoogle').forEach(() => {
-        try {
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-          console.warn('AdSense load skipped:', e);
-        }
-      });
-    }, 100);
+    return `<aside class="ad-slot ad-${esc(f)}" aria-label="Advertisement"><span class="ad-label">Advertisement</span><!--
+      AdSense slot. To activate: replace data-ad-slot, then uncomment this block.
+      <ins class="adsbygoogle" style="display:block"
+        data-ad-client="ca-pub-1319817671788428"
+        data-ad-slot="XXXXXXXXXX"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    --></aside>`;
   }
 
   function lookupCat(id)     { return byId(D.cats, id); }
@@ -123,6 +101,9 @@
   function lookupEnemy(id)   { return byId(D.enemies, id); }
   function lookupLocation(id){ return byId(D.locations, id); }
   function lookupStatus(id)  { return byId(D.statuses, id); }
+  function lookupClass(id)   { return byId(D.classes || [], id); }
+  function lookupMutation(id){ return byId(D.mutations || [], id); }
+  function lookupBiome(id)   { return byId(D.biomes || [], id); }
 
   /* -------------------- left nav -------------------- */
   function renderLeftNav(activeRoute) {
@@ -138,6 +119,7 @@
         <li><a href="/genetics" data-r="/genetics">Genetics</a></li>
         <li><a href="/breeding" data-r="/breeding">Breeding</a></li>
         <li><a href="/combat" data-r="/combat">Combat</a></li>
+        <li><a href="/classes" data-r="/classes">Classes</a></li>
         <li><a href="/abilities" data-r="/abilities">Abilities</a></li>
       </ul>
       <h3>Database</h3>
@@ -145,7 +127,9 @@
         <li><a href="/items" data-r="/items">Items</a></li>
         <li><a href="/enemies" data-r="/enemies">Enemies</a></li>
         <li><a href="/locations" data-r="/locations">Locations</a></li>
+        <li><a href="/biomes" data-r="/biomes">Biomes</a></li>
         <li><a href="/status" data-r="/status">Status Effects</a></li>
+        <li><a href="/mutations" data-r="/mutations">Mutations</a></li>
         <li><a href="/genes" data-r="/genes">Gene Index</a></li>
       </ul>
       <h3>Community</h3>
@@ -153,6 +137,13 @@
         <li><a href="/strategies" data-r="/strategies">Strategies</a></li>
         <li><a href="/patches" data-r="/patches">Patch Notes</a></li>
       </ul>
+      <h3>Site Info</h3>
+      <ul>
+        <li><a href="/about" data-r="/about">About</a></li>
+        <li><a href="/privacy-policy" data-r="/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/contact" data-r="/contact">Contact</a></li>
+      </ul>
+      ${adSlot('half-page')}
     `;
     leftNav.querySelectorAll('a').forEach((a) => {
       const r = a.getAttribute('data-r');
@@ -185,60 +176,83 @@
       <h3>Quick Links</h3>
       <ul>
         <li><a href="/cats">All cats</a></li>
+        <li><a href="/classes">Classes</a></li>
         <li><a href="/abilities">All abilities</a></li>
+        <li><a href="/mutations">Mutations</a></li>
         <li><a href="/items">All items</a></li>
         <li><a href="/enemies">Bestiary</a></li>
         <li><a href="/strategies">Strategies</a></li>
       </ul>
+      ${adSlot('rectangle')}
       ${extra}
       <h3>Did you know?</h3>
-      <p class="qd">Recessive genes only express when both alleles are lowercase. Want a rare trait? Inbreed carefully.</p>
-      <h3>Contribute</h3>
-      <p class="qd">
-      Found incorrect information or want to improve the wiki?
-      Visit the GitHub repository and submit a pull request.
-      </p>
-      <a href="https://github.com/guo1340/mewgenics-wiki.git">GitHub repository</a>
+      <p class="qd">Breeding power comes from stat inheritance, skill inheritance, mutations, and disorder control — not just one lucky cat.</p>
       ${adSlot('rectangle')}
+      <h3>Site Info</h3>
+      <ul>
+        <li><a href="/about">About this wiki</a></li>
+        <li><a href="/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <h3>Contribute</h3>
+      <p class="qd">Found wrong info? Edit <code>js/data.js</code> in the GitHub repo and open a PR.</p>
     `;
   }
 
   /* ============================================================
      ROUTER
      ============================================================ */
-  function parseRoute() { return location.pathname || '/'; }
+  function parseRoute() {
+    const pathRoute = location.pathname.replace(/\/$/, '') || '/';
+    return pathRoute === '/index.html' ? '/' : pathRoute;
+  }
+
+  function go(path) {
+    const cleanPath = path.replace(/\/$/, '') || '/';
+    if (cleanPath === parseRoute()) return;
+    history.pushState({}, '', cleanPath);
+    leftNav.classList.remove('open');
+    navigate();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   function navigate() {
     const route = parseRoute();
     renderLeftNav(route);
     renderRightNav(route);
 
-    if (route === '/' || route === '') renderHome();
-    else if (route === '/getting-started') renderStaticPage('getting-started');
-    else if (route === '/genetics') renderStaticPage('genetics');
-    else if (route === '/breeding') renderStaticPage('breeding');
-    else if (route === '/combat') renderStaticPage('combat');
-    else if (route === '/cats') renderCatsList();
-    else if (route === '/abilities') renderAbilitiesList();
-    else if (route === '/items') renderItemsList();
-    else if (route === '/enemies') renderEnemiesList();
-    else if (route === '/locations') renderLocationsList();
-    else if (route === '/status') renderStatusList();
-    else if (route === '/genes') renderGenesList();
-    else if (route === '/strategies') renderStrategiesList();
-    else if (route === '/patches') renderPatches();
-    else if (route === '/about') renderInfoPage('about');
-    else if (route === '/privacy-policy') renderInfoPage('privacy-policy');
-    else if (route === '/contact') renderInfoPage('contact');
-    else if (route.startsWith('/cats/')) renderCatDetail(route.slice(6));
-    else if (route.startsWith('/abilities/')) renderAbilityDetail(route.slice(11));
-    else if (route.startsWith('/items/')) renderItemDetail(route.slice(7));
-    else if (route.startsWith('/enemies/')) renderEnemyDetail(route.slice(9));
-    else if (route.startsWith('/locations/')) renderLocationDetail(route.slice(11));
-    else if (route.startsWith('/strategies/')) renderStrategyDetail(route.slice(12));
-    else render404(route);
+    if (route === '/' || route === '') return renderHome();
+    if (route === '/getting-started') return renderStaticPage('getting-started');
+    if (route === '/genetics')        return renderStaticPage('genetics');
+    if (route === '/breeding')        return renderStaticPage('breeding');
+    if (route === '/combat')          return renderStaticPage('combat');
+    if (route === '/classes')         return renderClassesList();
+    if (route === '/mutations')       return renderMutationsList();
+    if (route === '/biomes')          return renderBiomesList();
+    if (route === '/cats')            return renderCatsList();
+    if (route === '/abilities')       return renderAbilitiesList();
+    if (route === '/items')           return renderItemsList();
+    if (route === '/enemies')         return renderEnemiesList();
+    if (route === '/locations')       return renderLocationsList();
+    if (route === '/status')          return renderStatusList();
+    if (route === '/genes')           return renderGenesList();
+    if (route === '/strategies')      return renderStrategiesList();
+    if (route === '/patches')         return renderPatches();
+    if (route === '/about')           return renderInfoPage('about');
+    if (route === '/privacy-policy')  return renderInfoPage('privacy-policy');
+    if (route === '/contact')         return renderInfoPage('contact');
 
-    loadAds();
+    if (route.startsWith('/cats/'))      return renderCatDetail(route.slice(6));
+    if (route.startsWith('/abilities/')) return renderAbilityDetail(route.slice(11));
+    if (route.startsWith('/items/'))     return renderItemDetail(route.slice(7));
+    if (route.startsWith('/enemies/'))   return renderEnemyDetail(route.slice(9));
+    if (route.startsWith('/locations/')) return renderLocationDetail(route.slice(11));
+    if (route.startsWith('/classes/'))   return renderClassDetail(route.slice(9));
+    if (route.startsWith('/mutations/')) return renderMutationDetail(route.slice(11));
+    if (route.startsWith('/biomes/'))    return renderBiomeDetail(route.slice(8));
+    if (route.startsWith('/strategies/'))return renderStrategyDetail(route.slice(12));
+
+    render404(route);
   }
 
   /* ============================================================
@@ -264,9 +278,12 @@
         <a class="card" href="/genetics"><div class="icon">${SVG.dna}</div><h4>Genetics</h4><p>How genes pass, mutate, and stack.</p></a>
         <a class="card" href="/breeding"><div class="icon">${SVG.heart}</div><h4>Breeding</h4><p>Pairings, litters, and inheritance.</p></a>
         <a class="card" href="/combat"><div class="icon">${SVG.swords}</div><h4>Combat</h4><p>AP, positioning, status, matchups.</p></a>
+        <a class="card" href="/classes"><div class="icon">${SVG.paw}</div><h4>Classes</h4><p>${(D.classes || []).length} class roles and build notes.</p></a>
+        <a class="card" href="/mutations"><div class="icon">${SVG.dna}</div><h4>Mutations</h4><p>${(D.mutations || []).length} body-part effects and breeding notes.</p></a>
         <a class="card" href="/abilities"><div class="icon">${SVG.sparkle}</div><h4>Abilities</h4><p>${D.abilities.length} attacks &amp; spells.</p></a>
         <a class="card" href="/items"><div class="icon">${SVG.pouch}</div><h4>Items</h4><p>${D.items.length} pieces of gear &amp; treats.</p></a>
         <a class="card" href="/enemies"><div class="icon">${SVG.skull}</div><h4>Bestiary</h4><p>${D.enemies.length} enemies &amp; their tactics.</p></a>
+        <a class="card" href="/biomes"><div class="icon">${SVG.landmark}</div><h4>Biomes</h4><p>${(D.biomes || []).length} route plans and hazard notes.</p></a>
         <a class="card" href="/strategies"><div class="icon">${SVG.book}</div><h4>Strategies</h4><p>Builds &amp; comp ideas.</p></a>
       </div>
 
@@ -883,6 +900,126 @@
     `;
   }
 
+
+  /* ============================================================
+     CLASSES / MUTATIONS / BIOMES
+     ============================================================ */
+  function renderClassesList() {
+    main.innerHTML = `
+      ${adSlot('banner')}
+      <div class="page">
+        <h1>Classes</h1>
+        <div class="breadcrumb">Home / Classes</div>
+        <p>Class role guide for building teams and long-term bloodlines. Mewgenics has many class/skill combinations; these pages focus on practical planning.</p>
+        <div class="cards">
+          ${(D.classes || []).map(c => `
+            <a class="card" href="/classes/${esc(c.id)}">
+              <h4>${esc(c.name)} ${tag(c.difficulty)}</h4>
+              <p><strong>${esc(c.role)}</strong></p>
+              <p>${esc(c.summary)}</p>
+            </a>
+          `).join('')}
+        </div>
+      </div>
+      ${adSlot('in-article')}
+    `;
+  }
+
+  function renderClassDetail(id) {
+    const c = lookupClass(id);
+    if (!c) return render404(id);
+    main.innerHTML = `
+      ${adSlot('banner')}
+      <div class="page">
+        <div class="breadcrumb"><a href="/classes">Classes</a> / ${esc(c.name)}</div>
+        <h1>${esc(c.name)} ${tag(c.difficulty)}</h1>
+        <p><strong>Role:</strong> ${esc(c.role)}</p>
+        <p>${esc(c.summary)}</p>
+        <h3>Core stats</h3>
+        <div class="chip-list">${(c.coreStats || []).map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>
+        <h3>Build notes</h3>
+        <ul>${(c.tips || []).map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+        <div class="callout tip">Use this page as a planning reference, then confirm exact skill names and numbers against your current patch.</div>
+      </div>
+      ${adSlot('in-article')}
+    `;
+  }
+
+  function renderMutationsList() {
+    main.innerHTML = `
+      ${adSlot('banner')}
+      <div class="page">
+        <h1>Mutations</h1>
+        <div class="breadcrumb">Home / Mutations</div>
+        <p>Mutations are inheritable body changes that can alter stats, skills, utility, or combat behavior. Many are tradeoffs; the best ones improve a class plan without damaging its key stat.</p>
+        <table class="data">
+          <thead><tr><th>Mutation</th><th>Body part</th><th>Type</th><th>Effect</th></tr></thead>
+          <tbody>${(D.mutations || []).map(m => `
+            <tr>
+              <td><a href="/mutations/${esc(m.id)}" class="row-link">${esc(m.name)}</a></td>
+              <td>${esc(m.part)}</td>
+              <td>${tag(m.polarity)}</td>
+              <td>${esc(m.effect)}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      ${adSlot('in-article')}
+    `;
+  }
+
+  function renderMutationDetail(id) {
+    const m = lookupMutation(id);
+    if (!m) return render404(id);
+    main.innerHTML = `
+      ${adSlot('banner')}
+      <div class="page">
+        <div class="breadcrumb"><a href="/mutations">Mutations</a> / ${esc(m.name)}</div>
+        <h1>${esc(m.name)} ${tag(m.polarity)}</h1>
+        <p><strong>Body part:</strong> ${esc(m.part)}</p>
+        <p><strong>Effect:</strong> ${esc(m.effect)}</p>
+        <div class="callout tip"><strong>Breeding note:</strong> ${esc(m.notes)}</div>
+        <p>Mutation value depends on class role. A speed penalty may be acceptable on a Tank but disastrous on a Thief or Hunter.</p>
+      </div>
+      ${adSlot('in-article')}
+    `;
+  }
+
+  function renderBiomesList() {
+    main.innerHTML = `
+      ${adSlot('banner')}
+      <div class="page">
+        <h1>Biomes &amp; Routes</h1>
+        <div class="breadcrumb">Home / Biomes</div>
+        <p>Route planning matters because each biome pressures different parts of your team and bloodline.</p>
+        <div class="cards">
+          ${(D.biomes || []).map(b => `
+            <a class="card" href="/biomes/${esc(b.id)}">
+              <h4>${esc(b.name)} ${tag(b.tier)}</h4>
+              <p>${esc(b.plan)}</p>
+            </a>`).join('')}
+        </div>
+      </div>
+      ${adSlot('in-article')}
+    `;
+  }
+
+  function renderBiomeDetail(id) {
+    const b = lookupBiome(id);
+    if (!b) return render404(id);
+    main.innerHTML = `
+      ${adSlot('banner')}
+      <div class="page">
+        <div class="breadcrumb"><a href="/biomes">Biomes</a> / ${esc(b.name)}</div>
+        <h1>${esc(b.name)} ${tag(b.tier)}</h1>
+        <p>${esc(b.plan)}</p>
+        <h3>Common hazards</h3>
+        <ul>${(b.hazards || []).map(h => `<li>${esc(h)}</li>`).join('')}</ul>
+      </div>
+      ${adSlot('in-article')}
+    `;
+  }
+
   /* ============================================================
      STATUS / GENES / STRATEGIES / PATCHES
      ============================================================ */
@@ -1044,6 +1181,7 @@
         crumb: 'Contact',
         body: `
           <p>Use this page to report incorrect wiki information, request removals, suggest new pages, or ask questions about GameWikiHub Mewgenics Wiki.</p>
+          <div class="callout tip"><strong>Before publishing:</strong> replace the placeholder email below with your real contact email, or link to your GitHub Issues page.</div>
           <h3>Email</h3>
           <p><a href="mailto:contact@gamewikihub.com">contact@gamewikihub.com</a></p>
           <h3>What to include</h3>
@@ -1089,6 +1227,9 @@
     D.items.forEach(i      => index.push({ title: i.name, sub: 'Item',     href: '/items/' + i.id }));
     D.enemies.forEach(e    => index.push({ title: e.name, sub: 'Enemy',    href: '/enemies/' + e.id }));
     D.locations.forEach(l  => index.push({ title: l.name, sub: 'Location', href: '/locations/' + l.id }));
+    (D.classes || []).forEach(c => index.push({ title: c.name, sub: 'Class', href: '/classes/' + c.id }));
+    (D.mutations || []).forEach(m => index.push({ title: m.name, sub: 'Mutation', href: '/mutations/' + m.id }));
+    (D.biomes || []).forEach(b => index.push({ title: b.name, sub: 'Biome', href: '/biomes/' + b.id }));
     D.statuses.forEach(s   => index.push({ title: s.name, sub: 'Status',   href: '/status' }));
     D.genes.forEach(g      => index.push({ title: g.name, sub: 'Gene',     href: '/genes' }));
     D.strategies.forEach(s => index.push({ title: s.title, sub: 'Strategy', href: '/strategies/' + s.id }));
@@ -1101,29 +1242,6 @@
   }
 
   const searchIndex = buildSearchIndex();
-
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a');
-    if (!a) return;
-
-    const href = a.getAttribute('href');
-    if (!href) return;
-
-    if (
-      href.startsWith('/') &&
-      !href.startsWith('//') &&
-      !a.hasAttribute('download') &&
-      a.target !== '_blank'
-    ) {
-      e.preventDefault();
-      history.pushState({}, '', href);
-      leftNav.classList.remove('open');
-      navigate();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  });
-
-  window.addEventListener('popstate', navigate);
 
   function runSearch(q) {
     if (!q) { searchResults.classList.remove('open'); return; }
@@ -1173,6 +1291,23 @@
   function saveState(key, state) {
     try { localStorage.setItem('mw:' + key, JSON.stringify(state)); } catch (e) {}
   }
+
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#')) return;
+    const url = new URL(href, location.origin);
+    if (url.origin !== location.origin) return;
+    e.preventDefault();
+    go(url.pathname);
+  });
+
+  window.addEventListener('popstate', () => {
+    leftNav.classList.remove('open');
+    navigate();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
   navigate();
 })();
