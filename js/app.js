@@ -84,15 +84,19 @@
   ----------------------------------------------------- */
   function adSlot(format) {
     const f = format || 'rectangle';
-    return `<aside class="ad-slot ad-${esc(f)}" aria-label="Advertisement"><span class="ad-label">Advertisement</span><!--
-      AdSense slot. To activate: replace data-ad-slot, then uncomment this block.
-      <ins class="adsbygoogle" style="display:block"
-        data-ad-client="ca-pub-1319817671788428"
-        data-ad-slot="6141169453"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    --></aside>`;
+    const isBanner = f === 'banner';
+
+    return `
+      <aside class="ad-slot ad-${esc(f)}" aria-label="Advertisement">
+        <span class="ad-label">Advertisement</span>
+        <ins class="adsbygoogle"
+          style="display:block;${isBanner ? 'width:100%;height:90px;' : ''}"
+          data-ad-client="ca-pub-1319817671788428"
+          data-ad-slot="6141169453"
+          ${isBanner ? '' : 'data-ad-format="auto"'}
+          data-full-width-responsive="true"></ins>
+      </aside>
+    `;
   }
 
   function lookupCat(id)     { return byId(D.cats, id); }
@@ -209,6 +213,19 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function loadAds() {
+    if (!window.adsbygoogle) return;
+
+    document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status])')
+      .forEach(() => {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+          console.warn('AdSense push failed:', e);
+        }
+      });
+  }
+
   function navigate() {
     const route = parseRoute();
     renderLeftNav(route);
@@ -246,6 +263,7 @@
     if (route.startsWith('/strategies/'))return renderStrategyDetail(route.slice(12));
 
     render404(route);
+    setTimeout(loadAds, 100);
   }
 
   /* ============================================================
